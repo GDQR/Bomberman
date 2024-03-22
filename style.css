@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+}
+
 canvas{
     width: 1200px;
     height: 600px;

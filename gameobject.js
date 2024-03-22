@@ -29,4 +29,5 @@ export class Collider{
     offsetX = 0;
     offsetY = 0;
     collision = false;
+    idsCollision = [];
 };

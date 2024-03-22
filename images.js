@@ -7,6 +7,10 @@ export const enumImage = {
     background: 1,
     items: 2,
     collider: 3,
+    explosion: 4,
+    explosionEnemy: 5,
+    semaphore: 6,
+    // walls: 7
 };
 
 export class ImageComponent{
@@ -16,9 +20,14 @@ export class ImageComponent{
     image;
 };
 
-fileImage.push("Bomberman.png");
-fileImage.push("Stage 1-1.png");
-fileImage.push("Enemies and items.gif");
-fileImage.push("collider.png");
+fileImage.push("sprites/Bomberman.png");
+fileImage.push("sprites/background.png");
+fileImage.push("sprites/Enemies and items.gif");
+fileImage.push("sprites/collider.png");
+fileImage.push("sprites/explosion.png");
+fileImage.push("sprites/explosionEnemy.png");
+fileImage.push("sprites/semaphore.png");
+// fileImage.push("sprites/walls.png");
+
 
 // export {fileImage, images};

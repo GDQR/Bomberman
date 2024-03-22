@@ -1,117 +1,74 @@
-import { images  } from "./images.js";
+import { images } from "./images.js";
 import { eComp, manComp } from "./ecs.js";
-import { grid} from "./grid.js";
+import { grid } from "./grid.js";
+import { animations } from "./animation/animationData.js";
 
 export const canvas = document.querySelector("canvas");
 export const ctx = canvas.getContext("2d");
 
-export let enumAnimLenght = 0;
-export const enumAnim={
-    idleDownPlayer: enumAnimLenght++,
-    idleUpPlayer: enumAnimLenght++,
-    idleLeftPlayer: enumAnimLenght++,
-    idleRightPlayer: enumAnimLenght++,
-    downPlayer: enumAnimLenght++,
-    upPlayer: enumAnimLenght++,
-    leftPlayer: enumAnimLenght++,
-    rightPlayer: enumAnimLenght++,
-    bomb: enumAnimLenght++,
-    enemie1Down: enumAnimLenght++,
-    wall: enumAnimLenght++,
+export let enumLayerLenght = 0;
+export const enumLayer = {
+    background: enumLayerLenght++,
+    bomb: enumLayerLenght++,
+    explosion: enumLayerLenght++,
+    explosionCenter: enumLayerLenght++,
+    enemy: enumLayerLenght++,
+    bomberman: enumLayerLenght++,
 };
 
-// animacion
-export let animations = []; // guarda las animaciones ya predefinidas
+function flipSpriteHorizontally(img, x, y, spriteX, spriteY, spriteW, spriteH) {
+    // move to x + img's width
+    // adding img.width is necessary because we're flipping from
+    //     the right side of the img so after flipping it's still
+    //     at [x,y]
+    ctx.translate(x + spriteW, y);
 
-export class Animation{
-    constructor( animation){
-        this.animation = animations[animation],
-        this.actualFrame = 0,
-        this.timer = 0
+    // scaleX by -1; this "trick" flips horizontally
+    ctx.scale(-1, 1);
+
+    // draw the img
+    // no need for x,y since we've already translated
+    ctx.drawImage(img,
+        spriteX, spriteY, spriteW, spriteH, 0, 0, spriteW, spriteH
+    );
+
+    // always clean up -- reset transformations to default
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+export class Animation {
+    constructor(animation, layer = 0, loop = true, flip = false ) {
+        this.animation = animations[animation];
+        this.actualFrame = 0;
+        this.timer = 0;
+        this.flip = flip;
+        this.loop = loop;
+        this.layer = layer;
     }
     animation;
     actualFrame;
     timer;
+    flip;
+    loop;
+    layer;
 }
 
-class animacion{
-    id = 0;
-    name = "undefined";
-    frame = [];
-}
+export class AnimationManager {
+    static getFrame(entity) {
 
-for(let i=0; i<enumAnimLenght;i++){
-    animations[i] = new animacion(); // Guarda todas las animaciones 
-}
-
-function newFrame(x=0,y=0,width=16,height=24,time=10){
-    let frame ={
-        x:x,
-        y:y,
-        width:width,
-        height:height,
-        time:time,
-    };
-    return frame;
-}
-
-animations[enumAnim.idleDownPlayer].id = enumAnim.idleDownPlayer;
-animations[enumAnim.idleDownPlayer].frame.push(newFrame(72,46));
-animations[enumAnim.idleUpPlayer].frame.push(newFrame(73,20));
-animations[enumAnim.idleLeftPlayer].frame.push(newFrame(3,44));
-animations[enumAnim.idleRightPlayer].frame.push(newFrame(106,47));
-
-animations[enumAnim.downPlayer].id = enumAnim.downPlayer;
-animations[enumAnim.downPlayer].frame.push(newFrame(56,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(72,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(88,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(72,46,16,24,10)); 
-
-animations[enumAnim.upPlayer].id = enumAnim.upPlayer;
-animations[enumAnim.upPlayer].frame.push(newFrame(57,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(73,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(89,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(73,20,16,24,10)); // up
-
-animations[enumAnim.leftPlayer].id = enumAnim.leftPlayer;
-animations[enumAnim.leftPlayer].frame.push(newFrame(36,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(3,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(19,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(3,44,16,24,10));
-
-animations[enumAnim.rightPlayer].id = enumAnim.rightPlayer;
-animations[enumAnim.rightPlayer].frame.push(newFrame(138,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(106,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(122,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(106,47,16,24,10));
-
-animations[enumAnim.bomb].id = enumAnim.bomb;
-animations[enumAnim.bomb].frame.push(newFrame(2,28,16,16));
-animations[enumAnim.bomb].frame.push(newFrame(20,28,16,16));
-animations[enumAnim.bomb].frame.push(newFrame(38,28,16,16));
-animations[enumAnim.bomb].frame.push(newFrame(2,28,16,16));
-
-animations[enumAnim.enemie1Down].id = enumAnim.enemie1Down;
-animations[enumAnim.enemie1Down].frame.push(newFrame(2,2));
-animations[enumAnim.enemie1Down].frame.push(newFrame(20,2));
-animations[enumAnim.enemie1Down].frame.push(newFrame(38,2));
-animations[enumAnim.enemie1Down].frame.push(newFrame(56,2));
-
-animations[enumAnim.wall].id = enumAnim.wall;
-animations[enumAnim.wall].frame.push(newFrame(48,33,16,16));
-
-export class AnimationManager{
-    static getFrame(entity){
-        
-        if(entity.actualFrame >= entity.animation.frame.length){
-            entity.actualFrame = 0;    
-                    //console.log("lenght: "+arrayAnim[i].frame.length);
+        if (entity.actualFrame >= entity.animation.frame.length) {
+            if (entity.loop == true) {
+                entity.actualFrame = 0;
+            } else {
+                entity.actualFrame = entity.animation.frame.length - 1;
+            }
+            //console.log("lenght: "+arrayAnim[i].frame.length);
         }
 
         let index = entity.actualFrame;
         let frame = entity.animation.frame[index];
 
-        if(entity.timer >= frame.time){
+        if (entity.timer >= frame.time) {
             entity.timer = 0;
             entity.actualFrame++;
         }
@@ -122,52 +79,71 @@ export class AnimationManager{
     };
 }
 
-export class renderer{
-    static update(){
+let printOne = true;
+export class renderer {
+    static update() {
         let frame;
         let vecPos;
         let image;
         let pos;
         let offsetImage;
-        // console.log("lenght: "+manComp.get(eComp.animation).value.length);
-        // console.log(manComp.sparce);
-        // console.log(manComp.packed);
-        
-        // manComp.get(eComp.animation).value.length
-        for(let i=0; i < manComp.sparce[eComp.animation].value.length; i++){
-            if(manComp.sparce[eComp.animation].value[i] === undefined){
-                continue;
-            }
-            // console.log(animEntity[i].animation);
-            // console.log(i);
-            frame = AnimationManager.getFrame(manComp.getByID(i,eComp.animation));
-            // console.log(manComp.sparce[eComp.vec2].value[i]);
-            vecPos = manComp.getByID(i,eComp.vec2);
-            offsetImage = manComp.getByID(i,eComp.offsetImage);
-            pos = manComp.getByID(grid[vecPos.x][vecPos.y],eComp.grid);
-            // console.log("animID: "+vecPos);
-            // console.log(vec2.pos[vecPos]);
-            
-            image = manComp.getByID(i,eComp.images).image;
-            /**
-             * frame = animEntity[0].animation // player
-             * frame = animEntity[1].animation // bomb
-             * frame = animEntity[2].animation // bomb
-             * vecpos = animEntity[0].id = 0
-             * vecpos = animEntity[1].id = 2
-             * vecpos = animEntity[2].id = 3
-             * images = images[0] = bomberman.png
-             * images = images[1] = stage 1-1.png // debe ser enemies and items.png = image[2]
-             * images = images[2] = enemies and items.png 
-             * 
-             */
+        /**
+         *  @type {Animation}
+         * */
+        let anim;
+        let animByLayers = [];
+        let ids = [];
 
-            // try{
-                ctx.drawImage(images[image],frame.x,frame.y,frame.width,frame.height, pos.x + vecPos.offsetX + offsetImage.x ,pos.y + vecPos.offsetY + offsetImage.y,frame.width,frame.height);
-            
-                // }catch{
-                // console.log("error");
+
+        // if (printOne === true) {
+            // printOne = false;
+            // console.log(manComp.sparce[eComp.animation]);
+            // console.log("lenght: " + manComp.get(eComp.animation).value.length);
+            // console.log("sparce lenght: " + manComp.sparce[eComp.animation].value.length);
+            // console.log(enumLayerLenght);
+            for (let i = 0; i < enumLayerLenght; i++) {
+                animByLayers[i] = [];
+                ids[i] = [];
+                // console.log("animByLayers length: " + animByLayers.length);
+            }
+
+            for (let i = 0; i < manComp.sparce[eComp.animation].value.length; i++) {
+                if (manComp.sparce[eComp.animation].value[i] === undefined) {
+                    continue;
+                }
+
+                anim = manComp.getByID(i, eComp.animation);
+                animByLayers[anim.layer].push(anim);
+                ids[anim.layer].push(i);
+            }
+
+            // for (let i = 0; i < enumLayerLenght; i++) {
+            //     console.log(animByLayers[i]);
             // }
-        }
+
+            for (let i = 0; i < animByLayers.length; i++) {
+                for (let j = 0; j < animByLayers[i].length; j++) {
+                    anim = animByLayers[i][j];
+                    frame = AnimationManager.getFrame(anim);
+                    // console.log(manComp.sparce[eComp.vec2].value[i]);
+                    vecPos = manComp.getByID(ids[i][j], eComp.vec2);
+                    offsetImage = manComp.getByID(ids[i][j], eComp.offsetImage);
+                    pos = manComp.getByID(grid[vecPos.x][vecPos.y], eComp.grid);
+                    // console.log("animID: "+vecPos);
+                    // console.log(vec2.pos[vecPos]);
+                    image = manComp.getByID(ids[i][j], eComp.images).image;
+
+                    // console.log(i);
+                    // console.log(pos);
+                    // console.log(image);
+                    if (anim.flip === false) {
+                        // console.log("entre");
+                        ctx.drawImage(images[image], frame.x, frame.y, frame.width, frame.height, pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.width, frame.height);
+                    } else {
+                        flipSpriteHorizontally(images[image], pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.x, frame.y, frame.width, frame.height);
+                    }
+                }
+            }
+        // }
     }
 }
