@@ -62,15 +62,23 @@ function newTileBackground(x, y, anim, image, flip = false) {
 };
 
 var destructibleObject = [];
+var destructibleObjectExplosion = [];
 
-function createDestructibleObject(x, y, anim, loop, image) {
+function createDestructibleObject(x, y, anim, layer, loop, image) {
     let id = manEntity.create();
     manComp.create(id, eComp.vec2, new Vec2(x, y));
     manComp.create(id, eComp.offsetImage, new Vec2(0, 0));
-    manComp.create(id, eComp.animation, new Animation(anim, enumLayer.background, loop));
+    manComp.create(id, eComp.animation, new Animation(anim, layer, loop));
     manComp.create(id, eComp.images, new ImageComponent(image));
     return id;
 }
+
+// state
+let gameOver = false;
+let goalId = manEntity.create(); // zona de la meta
+let goalExist = false;
+let goalPossibility;
+// manComp.create(goalId, eComp.vec2, new Vec2(11, 7));
 
 // limites
 let limitX = 2;
@@ -128,20 +136,28 @@ function createBackground() {
 
     // Tiles random
     let randomNum;
+    let randomWalls = 0;
+    const maxrandomWalls = 8;
+    let randomObjects = 0;
+    const maxrandomObjects = 35;
+
+    // TODO: combinar las filas pares y impares
     for (let i = limitY; i <= limitHeight; i += 2) {
         for (let j = limitX; j <= limitWidth; j++) {
             randomNum = getRandomInt(0, 3);
             tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
 
-            if (randomNum === 0) {
-                // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
-
-            } else {
-                // tilesBackground[i][j]
-                destructibleObject[0] = createDestructibleObject(j, i, enumAnim.semaphore, true, enumImage.semaphore);
-
+            if ((i !== limitY || j !== limitX) && (i !== limitY || j !== limitX + 1) && (i !== limitY + 1 || j !== limitX)) {
+                if (randomNum === 0 && randomWalls < maxrandomWalls) {
+                    // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
+                    wall.push(newWall(j, i, enumAnim.wall1, enumImage.background));
+                    tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1, enumImage.background);
+                    randomWalls++;
+                } else if (randomNum === 1 && randomObjects < maxrandomObjects) {
+                    destructibleObject.push(createDestructibleObject(j, i, enumAnim.semaphore, enumLayer.background, true, enumImage.semaphore));
+                    randomObjects++;
+                }
             }
-            // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile6, enumImage.background);
 
         }
     }
@@ -152,21 +168,67 @@ function createBackground() {
 
         }
     }
-
+    goalPossibility = destructibleObject.length;
 }
 
 createBackground();
-// destructibleObject[0] = createDestructibleObject(2,5,enumAnim.semaphore,false,enumImage.semaphore);
-// destructibleObject[0] = createDestructibleObject(2,5,enumAnim.semaphore,true,enumImage.semaphore);
+
+let enumItemsLength = 0;
+const enumItems={
+    bomb: enumItemsLength++,
+    explosion: enumItemsLength++,
+}
+
+var items = [];
+
+function createItem(x, y) {
+    let rand = getRandomInt(0, goalPossibility);
+    rand = 1;
+    let item ={
+        id: -1,
+        itemID: -1
+    }
+    if (rand === 0 && goalExist === false) {
+        // let id = manEntity.create();
+        goalExist = true;
+        manComp.create(goalId, eComp.vec2, new Vec2(x, y));
+        manComp.create(goalId, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(goalId, eComp.images, new ImageComponent(enumImage.items));
+        manComp.create(goalId, eComp.animation, new Animation(enumAnim.goal, enumLayer.explosion));
+        // items.push(goalId);
+        // console.log("pase");
+    } else if (rand === 1) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.bomb;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.images, new ImageComponent(enumImage.items));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemBomb, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    }else if (rand === 2) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.explosion;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.images, new ImageComponent(enumImage.items));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemExplosion, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    }
+    // console.log("rand: "+rand);
+    // console.log("goalposs: "+goalPossibility);
+
+}
 
 // Bombas
-let bombMax = 10;
+let bombMax = 1;
 let bombs = []; // Guarda todas las bombas
 let isBombCreated = false;
 
 let explosions = [];
 let explosionsEnemy = [];
-let explosionRange = 2;
+let explosionRange = 1;
 // Enemigos
 
 function newEnemy(x, y) {
@@ -176,18 +238,13 @@ function newEnemy(x, y) {
     manComp.create(id, eComp.offsetImage, new Vec2(0, -8));
     manComp.create(id, eComp.collider, new Collider(0, 0, 16, 16));
     manComp.create(id, eComp.animation, new Animation(enumAnim.enemie1Down, enumLayer.enemy));
-    manComp.create(id, eComp.images, new ImageComponent(enumImage.items));
+    manComp.create(id, eComp.images, new ImageComponent(enumImage.enemies));
     return id;
 }
 
 let enemies = [];
 
 enemies[0] = newEnemy(6, 3);
-
-// state
-let gameOver = false;
-let goalId = manEntity.create(); // zona de la meta
-manComp.create(goalId, eComp.vec2, new Vec2(11, 7));
 
 // Debug
 var debugState = false;
@@ -334,6 +391,45 @@ function playerMove() {
                 }
             }
         }
+
+        for (let i = 0; i < destructibleObject.length; i++) {
+            pos2 = manComp.getByID(destructibleObject[i], eComp.vec2);
+
+            if (move.x === pos2.x && move.y === pos2.y) {
+                if (speedX === 1 || speedX === -1) {
+                    move.x = pos.x;
+                }
+
+                if (speedY === 1 || speedY === -1) {
+                    move.y = pos.y;
+                }
+            }
+        }
+    }
+
+    // Item Destruction
+    let pos2;
+    for(let i=items.length-1; i>=0;i--){
+        pos2 = manComp.getByID(items[i].id,eComp.vec2);
+        if(pos.x === pos2.x && pos.y === pos2.y){
+            if(items[i].itemID === enumItems.bomb){
+                bombMax++;
+            }else
+            if(items[i].itemID === enumItems.explosion){
+                explosionRange++;
+            }
+            manEntity.destroy(items[i].id);
+            manComp.destroyID(items[i].id);
+            items.splice(i, 1);
+        }
+
+    }
+
+    if (goalExist === true && enemies.length === 0) {
+        let goalPos = manComp.getByID(goalId, eComp.vec2);
+        if (pos.x === goalPos.x && pos.y === goalPos.y) {
+            console.log("gane");
+        }
     }
 
     if (speedX !== 0 || speedY !== 0) { return; }
@@ -354,12 +450,6 @@ function playerMove() {
             manComp.getByID(playerId, eComp.animation).animation = animations[enumAnim.idleRightPlayer];
             break;
     }
-
-    let goalPos = manComp.getByID(goalId, eComp.vec2);
-    if (pos.x === goalPos.x && pos.y === goalPos.y) {
-        console.log("gane");
-    }
-
 }
 
 function getRandomInt(min, max) {
@@ -397,15 +487,12 @@ function getGridNeighbors(grid, isExplosion = false) {
      * @type {GridNeighbors}
      */
 
-    let up = new GridNeighbors();
-    let left = new GridNeighbors();
-    let down = new GridNeighbors();
-    let right = new GridNeighbors();
     let direction = [];
 
     if ((grid.direction === enumDirection.center ||
         grid.direction === enumDirection.up) &&
         grid.y > limitY) {
+        let up = new GridNeighbors();
         up.direction = enumDirection.up;
         up.y = grid.y - 1;
         up.x = grid.x;
@@ -414,6 +501,7 @@ function getGridNeighbors(grid, isExplosion = false) {
     if ((grid.direction === enumDirection.center ||
         grid.direction === enumDirection.left) &&
         grid.x > limitX) {
+        let left = new GridNeighbors();
         left.direction = enumDirection.left;
         left.x = grid.x - 1;
         left.y = grid.y;
@@ -422,6 +510,7 @@ function getGridNeighbors(grid, isExplosion = false) {
     if ((grid.direction === enumDirection.center ||
         grid.direction === enumDirection.down) &&
         grid.y < limitHeight) {
+        let down = new GridNeighbors();
         down.direction = enumDirection.down;
         down.x = grid.x;
         down.y = grid.y + 1;
@@ -430,6 +519,7 @@ function getGridNeighbors(grid, isExplosion = false) {
     if ((grid.direction === enumDirection.center ||
         grid.direction === enumDirection.right) &&
         grid.x < limitWidth) {
+        let right = new GridNeighbors();
         right.direction = enumDirection.right;
         right.x = grid.x + 1;
         right.y = grid.y;
@@ -455,6 +545,16 @@ function getGridNeighbors(grid, isExplosion = false) {
                 if (isExplosion === true) {
                     bombs[i].explode = true;
                 }
+            }
+        }
+    }
+
+    let posObject;
+    for (let i = 0; i < destructibleObject.length; i++) {
+        posObject = manComp.getByID(destructibleObject[i], eComp.vec2);
+        for (let j = direction.length - 1; j >= 0; j--) {
+            if (direction[j].x === posObject.x && direction[j].y === posObject.y) {
+                direction.splice(j, 1);
             }
         }
     }
@@ -595,6 +695,63 @@ function enemyDestruction() {
 
 }
 
+function objectDestruction() {
+    /**
+     * @type {Vec2}
+     */
+    let pos;
+    let pos2;
+    /**
+     * @type {Animation}
+     */
+    let anim;
+
+    for (let i = destructibleObjectExplosion.length - 1; i >= 0; i--) {
+        pos = manComp.getByID(destructibleObjectExplosion[i], eComp.vec2);
+        // for(let j=0; j<explosions.length; j++){
+        //     pos2 = manComp.getByID(explosions[j],eComp.vec2);
+        anim = manComp.getByID(destructibleObjectExplosion[i], eComp.animation);
+        if (anim.actualFrame === anim.animation.frame.length) {
+            manEntity.destroy(destructibleObjectExplosion[i]);
+            manComp.destroyID(destructibleObjectExplosion[i]);
+            destructibleObjectExplosion.splice(i, 1);
+        }
+        // if((((pos.y+1 === pos2.y || pos.y-1 === pos2.y) && pos.x === pos2.x) && (anim.animation.id === enumAnim.explosionVertical || anim.animation.id === enumAnim.explosionCenter)) ||
+        // (((pos.x+1 === pos2.x || pos.x-1 === pos2.x) && pos.y === pos2.y) && (anim.animation.id === enumAnim.explosionHorizontal || anim.animation.id === enumAnim.explosionCenter))){
+        //     // console.log("objeto");
+        //     // console.log("pos: "+ pos.x + ", "+pos.y);
+        //     // console.log("pos2: "+ + pos2.x + ", "+pos2.y);
+        //     manEntity.destroy(destructibleObjectExplosion[i]);
+        //     manComp.destroyID(destructibleObjectExplosion[i]);
+        //     destructibleObjectExplosion.splice(i, 1);
+        //     break;
+        // }
+        // }
+    }
+
+    // console.log(destructibleObject);
+    for (let i = destructibleObject.length - 1; i >= 0; i--) {
+        pos = manComp.getByID(destructibleObject[i], eComp.vec2);
+        for (let j = 0; j < explosions.length; j++) {
+            pos2 = manComp.getByID(explosions[j], eComp.vec2);
+            anim = manComp.getByID(explosions[j], eComp.animation);
+            if ((((pos.y + 1 === pos2.y || pos.y - 1 === pos2.y) && pos.x === pos2.x) && (anim.animation.id === enumAnim.explosionVertical || anim.animation.id === enumAnim.explosionCenter)) ||
+                (((pos.x + 1 === pos2.x || pos.x - 1 === pos2.x) && pos.y === pos2.y) && (anim.animation.id === enumAnim.explosionHorizontal || anim.animation.id === enumAnim.explosionCenter))) {
+                // console.log("objeto");
+                // console.log("pos: "+ pos.x + ", "+pos.y);
+                // console.log("pos2: "+ + pos2.x + ", "+pos2.y);
+                manEntity.destroy(destructibleObject[i]);
+                manComp.destroyID(destructibleObject[i]);
+                destructibleObject.splice(i, 1);
+                createItem(pos.x, pos.y);
+                goalPossibility--;
+                destructibleObjectExplosion.push(createDestructibleObject(pos.x, pos.y, enumAnim.semaphoreExplosion, enumLayer.explosionSemaphore, false, enumImage.semaphore))
+                break;
+            }
+        }
+    }
+}
+
 function createBomb(x, y) {
     let bomb = {
         id: manEntity.create(),
@@ -606,7 +763,7 @@ function createBomb(x, y) {
     manComp.create(bomb.id, eComp.vec2, new Vec2(x, y));
     manComp.create(bomb.id, eComp.offsetImage, new Vec2(0, 0));
     manComp.create(bomb.id, eComp.animation, new Animation(enumAnim.bomb, enumLayer.bomb));
-    manComp.create(bomb.id, eComp.images, new ImageComponent(enumImage.items));
+    manComp.create(bomb.id, eComp.images, new ImageComponent(enumImage.enemies));
     // console.log("bomba creada");
     return bomb;
 }
@@ -884,10 +1041,11 @@ function update() {
     if (debugState === false) {
         if (gameOver == false) {
             explosion();
+            objectDestruction();
             enemyDestruction();
+            bomb();
             playerMove();
             enemyMove();
-            bomb();
         }
         // finishGame();
     } else {

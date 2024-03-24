@@ -13,6 +13,7 @@ export const enumLayer = {
     explosion: enumLayerLenght++,
     explosionCenter: enumLayerLenght++,
     enemy: enumLayerLenght++,
+    explosionSemaphore: enumLayerLenght++,
     bomberman: enumLayerLenght++,
 };
 
