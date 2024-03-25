@@ -1,4 +1,4 @@
-import { images } from "./images.js";
+import { images } from "./animation/images.js";
 import { eComp, manComp } from "./ecs.js";
 import { grid } from "./grid.js";
 import { animations } from "./animation/animationData.js";
@@ -85,7 +85,7 @@ export class renderer {
     static update() {
         let frame;
         let vecPos;
-        let image;
+        let imgID;
         let pos;
         let offsetImage;
         /**
@@ -132,16 +132,15 @@ export class renderer {
                     pos = manComp.getByID(grid[vecPos.x][vecPos.y], eComp.grid);
                     // console.log("animID: "+vecPos);
                     // console.log(vec2.pos[vecPos]);
-                    image = manComp.getByID(ids[i][j], eComp.images).image;
+                    imgID = anim.animation.imageID;//manComp.getByID(ids[i][j], eComp.images).image;
 
                     // console.log(i);
                     // console.log(pos);
                     // console.log(image);
                     if (anim.flip === false) {
-                        // console.log("entre");
-                        ctx.drawImage(images[image], frame.x, frame.y, frame.width, frame.height, pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.width, frame.height);
+                        ctx.drawImage(images[imgID], frame.x, frame.y, frame.width, frame.height, pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.width, frame.height);
                     } else {
-                        flipSpriteHorizontally(images[image], pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.x, frame.y, frame.width, frame.height);
+                        flipSpriteHorizontally(images[imgID], pos.x + vecPos.offsetX + offsetImage.x, pos.y + vecPos.offsetY + offsetImage.y, frame.x, frame.y, frame.width, frame.height);
                     }
                 }
             }

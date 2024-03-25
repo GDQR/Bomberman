@@ -14,13 +14,6 @@ export const enumImage = {
     // walls: 7
 };
 
-export class ImageComponent{
-    constructor(image){
-        this.image = image;
-    }
-    image;
-};
-
 fileImage.push("sprites/Bomberman.png");
 fileImage.push("sprites/background.png");
 fileImage.push("sprites/Enemies and items.gif");

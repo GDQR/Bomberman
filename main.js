@@ -1,4 +1,4 @@
-import { fileImage, ImageComponent, images, enumImage, } from "./images.js";
+import { enumImage, } from "./animation/images.js";
 import { canvas, ctx, enumLayer, Animation, renderer } from "./animations.js";
 import { enumAnim, animations } from "./animation/animationData.js";
 import { Collider, Vec2 } from "./gameobject.js";
@@ -17,17 +17,11 @@ function newPLayer() {
     manComp.create(id, eComp.offsetImage, new Vec2(0, -8));
     manComp.create(id, eComp.collider, new Collider(0, 0, 16, 8));
     manComp.create(id, eComp.animation, new Animation(enumAnim.idleDownPlayer, enumLayer.bomberman));
-    manComp.create(id, eComp.images, new ImageComponent(enumImage.bomberman));
     return id;
 }
 
 let playerId = newPLayer();
 console.log("player id: " + playerId);
-// Images
-for (let i = 0; i < fileImage.length; i++) {
-    images.push(new Image());
-    images[i].src = fileImage[i];
-}
 
 // muros
 
@@ -54,7 +48,6 @@ function newTileBackground(x, y, anim, image, flip = false) {
     manComp.create(id, eComp.vec2, new Vec2(x, y));
     manComp.create(id, eComp.offsetImage, new Vec2(0, 0));
     manComp.create(id, eComp.animation, new Animation(anim, enumLayer.background, false, flip));
-    manComp.create(id, eComp.images, new ImageComponent(image));
     // manComp.create(id,eComp.collider,new Collider(gridPos.x,gridPos.y,width,height));
     // manComp.create(id,eComp.collider,new Collider(0,0,width,height));
     // console.log(manComp.getByID(id,eComp.collider));
@@ -69,7 +62,6 @@ function createDestructibleObject(x, y, anim, layer, loop, image) {
     manComp.create(id, eComp.vec2, new Vec2(x, y));
     manComp.create(id, eComp.offsetImage, new Vec2(0, 0));
     manComp.create(id, eComp.animation, new Animation(anim, layer, loop));
-    manComp.create(id, eComp.images, new ImageComponent(image));
     return id;
 }
 
@@ -193,7 +185,6 @@ function createItem(x, y) {
         goalExist = true;
         manComp.create(goalId, eComp.vec2, new Vec2(x, y));
         manComp.create(goalId, eComp.offsetImage, new Vec2(0, 0));
-        manComp.create(goalId, eComp.images, new ImageComponent(enumImage.items));
         manComp.create(goalId, eComp.animation, new Animation(enumAnim.goal, enumLayer.explosion));
         // items.push(goalId);
         // console.log("pase");
@@ -202,7 +193,6 @@ function createItem(x, y) {
         item.itemID = enumItems.bomb;
         manComp.create(item.id, eComp.vec2, new Vec2(x, y));
         manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
-        manComp.create(item.id, eComp.images, new ImageComponent(enumImage.items));
         manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemBomb, enumLayer.explosion));
         items.push(item);
         // console.log("pase");
@@ -211,7 +201,6 @@ function createItem(x, y) {
         item.itemID = enumItems.explosion;
         manComp.create(item.id, eComp.vec2, new Vec2(x, y));
         manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
-        manComp.create(item.id, eComp.images, new ImageComponent(enumImage.items));
         manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemExplosion, enumLayer.explosion));
         items.push(item);
         // console.log("pase");
@@ -238,7 +227,6 @@ function newEnemy(x, y) {
     manComp.create(id, eComp.offsetImage, new Vec2(0, -8));
     manComp.create(id, eComp.collider, new Collider(0, 0, 16, 16));
     manComp.create(id, eComp.animation, new Animation(enumAnim.enemie1Down, enumLayer.enemy));
-    manComp.create(id, eComp.images, new ImageComponent(enumImage.enemies));
     return id;
 }
 
@@ -660,7 +648,6 @@ function createExplosionEnemy(x, y) {
     manComp.create(explosionID, eComp.vec2, new Vec2(x, y));
     manComp.create(explosionID, eComp.offsetImage, new Vec2(-4, -24));
     manComp.create(explosionID, eComp.animation, new Animation(enumAnim.explosionEnemy, enumLayer.explosion, true));
-    manComp.create(explosionID, eComp.images, new ImageComponent(enumImage.explosionEnemy));
     explosionsEnemy.push(explosionID);
 }
 
@@ -763,7 +750,6 @@ function createBomb(x, y) {
     manComp.create(bomb.id, eComp.vec2, new Vec2(x, y));
     manComp.create(bomb.id, eComp.offsetImage, new Vec2(0, 0));
     manComp.create(bomb.id, eComp.animation, new Animation(enumAnim.bomb, enumLayer.bomb));
-    manComp.create(bomb.id, eComp.images, new ImageComponent(enumImage.enemies));
     // console.log("bomba creada");
     return bomb;
 }
@@ -827,7 +813,6 @@ function createExplosion(x, y, anim) {
             manComp.create(explosionID, eComp.collider, new Collider(2, 0, 13, 13));
             break;
     }
-    manComp.create(explosionID, eComp.images, new ImageComponent(enumImage.explosion));
     explosions.push(explosionID);
 }
 
