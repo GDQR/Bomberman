@@ -3,7 +3,6 @@ export const eComp = {
     vec2: enumComponentsLenght++,
     offsetImage: enumComponentsLenght++,
     animation: enumComponentsLenght++,
-    images: enumComponentsLenght++,
     collider: enumComponentsLenght++,
     grid: enumComponentsLenght++,
     move: enumComponentsLenght++,

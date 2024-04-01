@@ -2,26 +2,42 @@ import { enumImage, } from "./animation/images.js";
 import { canvas, ctx, enumLayer, Animation, renderer } from "./animations.js";
 import { enumAnim, animations } from "./animation/animationData.js";
 import { Collider, Vec2 } from "./gameobject.js";
-import { grid, gridHeight, gridWidth } from "./grid.js"
+import { grid, Grid, gridHeight, gridWidth } from "./grid.js"
 import { eComp, manEntity, manComp } from "./ecs.js"
 import { key, debugMode, debugMove, showGrid } from "./debug.js";
 canvas.width = 600;
 canvas.height = 300;
 
+let enumDirectionLength = 0;
+const enumDirection = {
+    center: enumDirectionLength++,
+    up: enumDirectionLength++,
+    left: enumDirectionLength++,
+    down: enumDirectionLength++,
+    right: enumDirectionLength++
+}
+
 // player
 
+let speed = 1;
+let canMoveUp = false;
+let canMoveLeft = true;
+let canMoveDown = true;
+let canMoveRight = false;
 function newPLayer() {
     let id = manEntity.create();
-    manComp.create(id, eComp.vec2, new Vec2(2, 1)); //2,1
-    manComp.create(id, eComp.move, new Vec2(2, 1));
+    manComp.create(id, eComp.vec2, new Vec2(0, 0, 32, 16)); //2,1
+    manComp.create(id, eComp.move, new Vec2(2, 1, 32, 16)); // offsetX=32, offsetY=16
     manComp.create(id, eComp.offsetImage, new Vec2(0, -8));
-    manComp.create(id, eComp.collider, new Collider(0, 0, 16, 8));
+    manComp.create(id, eComp.collider, new Collider(2, 6, 11, 6));
     manComp.create(id, eComp.animation, new Animation(enumAnim.idleDownPlayer, enumLayer.bomberman));
     return id;
 }
 
 let playerId = newPLayer();
-console.log("player id: " + playerId);
+let playerDirectionX = enumDirection.center;
+let playerDirectionY = enumDirection.down;
+// console.log("player id: " + playerId);
 
 // muros
 
@@ -41,7 +57,7 @@ for (let i = 0; i < gridHeight; i++) {
     tilesBackground[i] = new Array(gridWidth);
 }
 
-function newTileBackground(x, y, anim, image, flip = false) {
+function newTileBackground(x, y, anim, flip = false) {
     let id = manEntity.create();
     // let gridPos = manComp.getByID(grid[x][y],eComp.grid);
     // console.log(gridPos)
@@ -57,7 +73,7 @@ function newTileBackground(x, y, anim, image, flip = false) {
 var destructibleObject = [];
 var destructibleObjectExplosion = [];
 
-function createDestructibleObject(x, y, anim, layer, loop, image) {
+function createDestructibleObject(x, y, anim, layer, loop) {
     let id = manEntity.create();
     manComp.create(id, eComp.vec2, new Vec2(x, y));
     manComp.create(id, eComp.offsetImage, new Vec2(0, 0));
@@ -82,47 +98,47 @@ function createBackground() {
 
     // Tiles limits
     // Tiles limits left
-    tilesBackground[0][0] = newTileBackground(0, 0, enumAnim.stage1Tile1, enumImage.background);
-    tilesBackground[0][1] = newTileBackground(1, 0, enumAnim.stage1Tile2, enumImage.background);
+    tilesBackground[0][0] = newTileBackground(0, 0, enumAnim.stage1Tile1,);
+    tilesBackground[0][1] = newTileBackground(1, 0, enumAnim.stage1Tile2,);
 
     for (let i = 1; i <= limitHeight; i++) {
-        tilesBackground[i][0] = newTileBackground(0, i, enumAnim.stage1Tile5, enumImage.background);
-        tilesBackground[i][1] = newTileBackground(1, i, enumAnim.stage1Tile6, enumImage.background);
+        tilesBackground[i][0] = newTileBackground(0, i, enumAnim.stage1Tile5);
+        tilesBackground[i][1] = newTileBackground(1, i, enumAnim.stage1Tile6);
     }
 
-    tilesBackground[gridHeight - 1][0] = newTileBackground(0, gridHeight - 1, enumAnim.stage1Tile7, enumImage.background);
-    tilesBackground[gridHeight - 1][1] = newTileBackground(1, gridHeight - 1, enumAnim.stage1Tile8, enumImage.background);
+    tilesBackground[gridHeight - 1][0] = newTileBackground(0, gridHeight - 1, enumAnim.stage1Tile7);
+    tilesBackground[gridHeight - 1][1] = newTileBackground(1, gridHeight - 1, enumAnim.stage1Tile8);
 
     // lado de arriba
 
     for (let i = 2; i < gridWidth - 2; i++) {
-        tilesBackground[0][i] = newTileBackground(i, 0, enumAnim.stage1Tile4, enumImage.background);
+        tilesBackground[0][i] = newTileBackground(i, 0, enumAnim.stage1Tile4);
     }
 
     // lado de abajo
 
     for (let i = 2; i < gridWidth - 2; i++) {
-        tilesBackground[gridHeight - 1][i] = newTileBackground(i, gridHeight - 1, enumAnim.stage1Tile9, enumImage.background);
+        tilesBackground[gridHeight - 1][i] = newTileBackground(i, gridHeight - 1, enumAnim.stage1Tile9);
     }
 
     // limite derecho
-    tilesBackground[0][gridWidth - 2] = newTileBackground(gridWidth - 2, 0, enumAnim.stage1Tile2, enumImage.background, true);
-    tilesBackground[0][gridWidth - 1] = newTileBackground(gridWidth - 1, 0, enumAnim.stage1Tile1, enumImage.background, true);
+    tilesBackground[0][gridWidth - 2] = newTileBackground(gridWidth - 2, 0, enumAnim.stage1Tile2, true);
+    tilesBackground[0][gridWidth - 1] = newTileBackground(gridWidth - 1, 0, enumAnim.stage1Tile1, true);
 
     for (let i = 1; i <= limitHeight; i++) {
-        tilesBackground[i][gridWidth - 2] = newTileBackground(gridWidth - 2, i, enumAnim.stage1Tile6, enumImage.background, true);
-        tilesBackground[i][gridWidth - 1] = newTileBackground(gridWidth - 1, i, enumAnim.stage1Tile5, enumImage.background, true);
+        tilesBackground[i][gridWidth - 2] = newTileBackground(gridWidth - 2, i, enumAnim.stage1Tile6, true);
+        tilesBackground[i][gridWidth - 1] = newTileBackground(gridWidth - 1, i, enumAnim.stage1Tile5, true);
     }
 
-    tilesBackground[gridHeight - 1][gridWidth - 2] = newTileBackground(gridWidth - 2, gridHeight - 1, enumAnim.stage1Tile8, enumImage.background, true);
-    tilesBackground[gridHeight - 1][gridWidth - 1] = newTileBackground(gridWidth - 1, gridHeight - 1, enumAnim.stage1Tile7, enumImage.background, true);
+    tilesBackground[gridHeight - 1][gridWidth - 2] = newTileBackground(gridWidth - 2, gridHeight - 1, enumAnim.stage1Tile8, true);
+    tilesBackground[gridHeight - 1][gridWidth - 1] = newTileBackground(gridWidth - 1, gridHeight - 1, enumAnim.stage1Tile7, true);
 
     //limite derecho prueba
 
     for (let i = 2; i <= 10; i += 2) {
         for (let j = 3; j <= 13; j += 2) {
-            wall.push(newWall(j, i, enumAnim.wall1, enumImage.background));
-            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1, enumImage.background);
+            wall.push(newWall(j, i, enumAnim.wall1));
+            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1);
         }
     }
 
@@ -137,16 +153,16 @@ function createBackground() {
     for (let i = limitY; i <= limitHeight; i += 2) {
         for (let j = limitX; j <= limitWidth; j++) {
             randomNum = getRandomInt(0, 3);
-            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
+            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
 
             if ((i !== limitY || j !== limitX) && (i !== limitY || j !== limitX + 1) && (i !== limitY + 1 || j !== limitX)) {
                 if (randomNum === 0 && randomWalls < maxrandomWalls) {
-                    // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
-                    wall.push(newWall(j, i, enumAnim.wall1, enumImage.background));
-                    tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1, enumImage.background);
+                    // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
+                    wall.push(newWall(j, i, enumAnim.wall1));
+                    tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1);
                     randomWalls++;
                 } else if (randomNum === 1 && randomObjects < maxrandomObjects) {
-                    destructibleObject.push(createDestructibleObject(j, i, enumAnim.semaphore, enumLayer.background, true, enumImage.semaphore));
+                    destructibleObject.push(createDestructibleObject(j, i, enumAnim.semaphore, enumLayer.background, true));
                     randomObjects++;
                 }
             }
@@ -156,7 +172,7 @@ function createBackground() {
 
     for (let i = 2; i <= limitHeight; i += 2) {
         for (let j = limitX; j <= limitWidth; j += 2) {
-            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11, enumImage.background);
+            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
 
         }
     }
@@ -166,7 +182,7 @@ function createBackground() {
 createBackground();
 
 let enumItemsLength = 0;
-const enumItems={
+const enumItems = {
     bomb: enumItemsLength++,
     explosion: enumItemsLength++,
 }
@@ -176,7 +192,7 @@ var items = [];
 function createItem(x, y) {
     let rand = getRandomInt(0, goalPossibility);
     rand = 1;
-    let item ={
+    let item = {
         id: -1,
         itemID: -1
     }
@@ -196,7 +212,7 @@ function createItem(x, y) {
         manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemBomb, enumLayer.explosion));
         items.push(item);
         // console.log("pase");
-    }else if (rand === 2) {
+    } else if (rand === 2) {
         item.id = manEntity.create();
         item.itemID = enumItems.explosion;
         manComp.create(item.id, eComp.vec2, new Vec2(x, y));
@@ -211,7 +227,7 @@ function createItem(x, y) {
 }
 
 // Bombas
-let bombMax = 1;
+let bombMax = 10;
 let bombs = []; // Guarda todas las bombas
 let isBombCreated = false;
 
@@ -257,10 +273,16 @@ window.addEventListener('keyup', function (e) {
 function playerMove() {
     let speedX = 0;
     let speedY = 0;
+    /**
+     * @type {Vec2}
+     */
     let pos = manComp.getByID(playerId, eComp.vec2);
+    /**
+     * @type {Vec2}
+     */
     let move = manComp.getByID(playerId, eComp.move);
     let anim = manComp.getByID(playerId, eComp.animation);
-
+    let canMove = true;
     // if(prueba==true){
     /**
      * gridPos  = 32,16
@@ -273,152 +295,341 @@ function playerMove() {
      *
      * gridPos2 - gridPos = 32-48 = -16 - offset(-16) = 0
      */
-    let gridPos = manComp.getByID(grid[pos.x][pos.y], eComp.grid);
-    let gridPos2 = manComp.getByID(grid[move.x][move.y], eComp.grid);
-    // console.log(offset);
-    if (gridPos2.x - gridPos.x - pos.offsetX != 0) {
-        if (gridPos2.x - gridPos.x > 0) {
-            pos.offsetX += 1;
+    // let gridPos = manComp.getByID(grid[pos.x][pos.y], eComp.grid);
+    let gridPos = manComp.getByID(grid[move.x][move.y], eComp.grid);
+    // let gridPos2 = manComp.getByID(grid[move.x][move.y], eComp.grid);
 
-        } else {
-            pos.offsetX -= 1;
-        }
-        return;
-        // console.log(gridPos.x+ pos.offsetX);
-        // console.log(gridPos2.x);
-        // console.log(gridPos2.x- gridPos.x - pos.offsetX);
-        // console.log(move);
-        // console.log(pos);
-    } else {
-        pos.x = move.x;
-        pos.offsetX = 0;
-        //  console.log("pase");
+    // no puedo usar por porque jode el movimiento
+    // pero el pos es usado por los grid para saber su posicion
+    // pero necesito el pos para ubicar correctamente la bomba
+
+    // si o si tengo que moverme usando el offset del pos
+    // NO DEBO USAR EL X e Y de POS 
+
+    // pos.x, pos.y NO USAR
+    // pos.offsetX, pos.offsetY se usa para mover el personaje en pantalla
+    // move.x, move.y se usa para el grid
+    // move.offsetX, move.offsetY se usa para saber exactamente en que grid esta
+
+    // se presiona una tecla
+    // usar el sistema de grid con move.x/y
+    // hacer las colisiones con los objetos que no puede pasar
+    // en caso de que exista, no se permite mover el move/pos.offset
+    // PERO SI EL SPEEDX/Y
+    // si no hay colision se mueve el move/pos.offset
+
+     
+    if (key['ArrowUp'] === true) {
+        speedY = -1;
+
+        // playerDirection = enumDirection.up;
+        anim.animation = animations[enumAnim.upPlayer];
+    } else if (key['ArrowDown'] === true) {
+        speedY = 1;
+
+        // playerDirection = enumDirection.down;
+        anim.animation = animations[enumAnim.downPlayer];
+    }
+    else if (key['ArrowLeft'] === true) {
+        speedX = -1;
+        // console.log("left");
+        // playerDirection = enumDirection.left;
+        anim.animation = animations[enumAnim.leftPlayer];
+    } else if (key['ArrowRight'] === true) {
+        speedX = 1;
+        // console.log("right");
+        anim.animation = animations[enumAnim.rightPlayer];
     }
 
-    if (gridPos2.y - gridPos.y - pos.offsetY != 0) {
-        if (gridPos2.y - gridPos.y > 0) {
-            pos.offsetY += 1;
-        } else {
-            pos.offsetY -= 1;
-        }
-        return;
-    } else {
-        pos.y = move.y;
-        pos.offsetY = 0;
-        //  console.log("pase");
-    }
+    // //collision
+    // let pos2;
+    // /**
+    //  * @type {Grid}
+    //  */
+    // let gridWallPos;
+    // for (let i = 0; i < wall.length; i++) {
+    //     pos2 = manComp.getByID(wall[i], eComp.vec2);
+    //     gridWallPos = manComp.getByID(grid[pos2.x][pos2.y],eComp.grid);
+    //     if(pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+    //        pos.offsetX+16 + speedX> gridWallPos.x && pos.offsetY+16 + speedY > gridWallPos.y){
+    //         // console.log("colision");
+    //         if(playerDirection === enumDirection.up){
+    //         }else if(playerDirection === enumDirection.down){
+    //             if(speedY === 1){
+    //                 speedY = 0;
+    //             }
+    //         }else if(playerDirection === enumDirection.right && pos.offsetX+8 !== gridWallPos.centerX){
+    //             console.log("der");
+    //             if(speedY === 1){
+    //                 // console.log("aba")
+    //                 speedY = 0;
+    //                 speedX = 1;
+    //             }
+    //         }else if(playerDirection === enumDirection.left){
+    //         }
 
-    // prueba = false;
+    //         // if(speedY === 1){
+    //         //     pos.offsetY--;
+    //         //     move.offsetY--;
+    //         // }else if(speedY === -1){
+    //         //     pos.offsetY++;
+    //         //     move.offsetY++;
+    //         // }else if(speedX === 1){
+    //         //     pos.offsetX--;
+    //         //     move.offsetX--;
+    //         // }else if(speedX === -1){
+    //         //     pos.offsetX++;
+    //         //     move.offsetX++;
+    //         // }
+    //         // canMove = false;
+    //        }
     // }
 
-    // console.log(pos);
-    if (pos.x == move.x && pos.y === move.y) {
-        // console.log("pase");
-        if (key['ArrowUp'] === true) {
-            speedY = -1;
-            if (pos.y > limitY) {
-                move.y -= 1; //pos.y - 1;
-                // pos.y += speedY;
-            }
+    if (speedY === -1) {
+    // canMoveUp = true;
+    //  canMoveLeft = true;
+    //  canMoveDown = true;
+    //  canMoveRight = true;
 
-            anim.animation = animations[enumAnim.upPlayer];
-        } else if (key['ArrowDown'] === true) {
-            speedY = 1;
-            if (pos.y < limitHeight) {
-                move.y += 1; //pos.y + 1;
-                // pos.y += speedY;
-            }
+        if (move.y > limitY || move.offsetY > limitY * 16) {
+            pos.offsetY -= speed;
+            move.offsetY -= speed;
+            playerDirectionY = enumDirection.up;
 
-            anim.animation = animations[enumAnim.downPlayer];
-        }
-        else if (key['ArrowLeft'] === true) {
-            speedX = -1;
-            if (pos.x > limitX) {
-                move.x -= 1;//pos.x - 1;
-                // pos.x += speedX;
-            }
-
-            anim.animation = animations[enumAnim.leftPlayer];
-        } else if (key['ArrowRight'] === true) {
-            speedX = 1;
-            if (pos.x < limitWidth) {
-                move.x += 1;//pos.x + 1;
-                // pos.x += speedX;
-            }
-            anim.animation = animations[enumAnim.rightPlayer];
-        }
-
-
-        // Collision with walls
-        // manComp.getByID(grid[pos.x][pos.y])
-        let pos2;
-        for (let i = 0; i < wall.length; i++) {
-            pos2 = manComp.getByID(wall[i], eComp.vec2);
-            if (move.x === pos2.x && move.y === pos2.y) {
-                // console.log("pase");
-                if (speedX === 1 || speedX === -1) {
-                    move.x = pos.x;
+            if (pos.offsetX !== gridPos.x) {
+                if (pos.offsetX > gridPos.x && playerDirectionX === enumDirection.left) {
+                    pos.offsetX--;
+                    move.offsetX--;
+                    // console.log("left");
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left) {
+                    pos.offsetX--;
+                    move.offsetX--;
+                    // console.log("left");
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right) {
+                    pos.offsetX++;
+                    move.offsetX++;
+                    // console.log("right");
+                } else if (pos.offsetX > gridPos.x && playerDirectionX === enumDirection.right) {
+                    pos.offsetX++;
+                    move.offsetX++;
+                    // console.log("right");
                 }
-
-                if (speedY === 1 || speedY === -1) {
-                    move.y = pos.y;
-                }
-
+            }
+            if (pos.offsetY < limitY * 16) {
+                pos.offsetY = limitY * 16;
+                move.offsetY = limitY * 16;
             }
         }
 
-        for (let i = 0; i < bombs.length; i++) {
-            pos2 = manComp.getByID(bombs[i].id, eComp.vec2);
-            if (move.x === pos2.x && move.y === pos2.y) {
-                if (speedX === 1 || speedX === -1) {
-                    move.x = pos.x;
-                }
+    } else if (speedY === 1) {
+        if (move.y < limitHeight || move.offsetY < limitHeight * 16) {
+            pos.offsetY += speed;
+            move.offsetY += speed;
+            // console.log(gridPos);
+            // playerDirection = enumDirection.down;
+            playerDirectionY = enumDirection.down;
 
-                if (speedY === 1 || speedY === -1) {
-                    move.y = pos.y;
+            if (pos.offsetX !== gridPos.x) {
+                if (pos.offsetX > gridPos.x && playerDirectionX === enumDirection.left) {
+                    pos.offsetX--;
+                    move.offsetX--;
+                    // console.log("left");
+                }
+                // console.log("right");
+                else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left) {
+                    pos.offsetX--;
+                    move.offsetX--;
+                }
+                else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right) {
+                    pos.offsetX++;
+                    move.offsetX++;
+                    // console.log("right");
+                } else if (pos.offsetX > gridPos.x && playerDirectionX === enumDirection.right) {
+                    pos.offsetX++;
+                    move.offsetX++;
                 }
             }
-        }
 
-        for (let i = 0; i < destructibleObject.length; i++) {
-            pos2 = manComp.getByID(destructibleObject[i], eComp.vec2);
-
-            if (move.x === pos2.x && move.y === pos2.y) {
-                if (speedX === 1 || speedX === -1) {
-                    move.x = pos.x;
-                }
-
-                if (speedY === 1 || speedY === -1) {
-                    move.y = pos.y;
-                }
+            if (pos.offsetY > limitHeight * 16) {
+                pos.offsetY = limitHeight * 16;
+                move.offsetY = limitHeight * 16;
             }
+
         }
+
     }
 
-    // Item Destruction
+    if (speedX === 1) {
+        // move.x++;
+        // move.offsetX += 1;
+        // pos.offsetX-=1;
+        if (move.x < limitWidth || move.offsetX < limitWidth * 16) {
+
+            pos.offsetX += speed;
+            move.offsetX += speed;
+            // playerDirection = enumDirection.right;
+            playerDirectionX = enumDirection.right;
+            if (pos.offsetY !== gridPos.y) {
+                if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.up) {
+                    pos.offsetY--;
+                    move.offsetY--;
+                    // console.log("left");
+                } else if (pos.offsetY < gridPos.y && playerDirectionY === enumDirection.up && pos.offsetY !== gridPos.y - 16) {
+                    pos.offsetY--;
+                    move.offsetY--;
+
+                    // console.log("up");
+                } else if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.down && pos.offsetY !== gridPos.y + 16) {
+                    pos.offsetY++;
+                    move.offsetY++;
+
+                    // console.log("down");
+                } else if (pos.offsetY < gridPos.y && playerDirectionY === enumDirection.down) {
+                    pos.offsetY++;
+                    move.offsetY++;
+                    // console.log("right");
+                }
+                // console.log(playerDirectionY);
+            }
+            if (pos.offsetX > limitWidth * 16) {
+                pos.offsetX = limitWidth * 16;
+                move.offsetX = limitWidth * 16;
+            }
+        }
+    } else if (speedX === -1) {
+        if (move.x > limitX || move.offsetX > limitX * 16) {
+            pos.offsetX -= speed;
+            move.offsetX -= speed;
+            playerDirectionX = enumDirection.left;
+            if (pos.offsetY !== gridPos.y) {
+                if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.up) {
+                    pos.offsetY--;
+                    move.offsetY--;
+                    // console.log("left");
+                } else if (pos.offsetY < gridPos.y && playerDirectionY === enumDirection.up && pos.offsetY !== gridPos.y - 16) {
+                    pos.offsetY--;
+                    move.offsetY--;
+                    // console.log("left");
+                } else if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.down && pos.offsetY !== gridPos.y + 16) {
+                    pos.offsetY++;
+                    move.offsetY++;
+                    // console.log("left");
+                } else if (pos.offsetY < gridPos.y && playerDirectionY === enumDirection.down) {
+                    pos.offsetY++;
+                    move.offsetY++;
+                    // console.log("down");
+                }
+            }
+            if (pos.offsetX < limitX * 16) {
+                pos.offsetX = limitX * 16;
+                move.offsetX = limitX * 16;
+            }
+        }
+
+        // pos.offsetX++;
+    }
+
+    if (pos.offsetY + 8 < gridPos.y) {
+        move.y -= 1;
+    } else if (pos.offsetY + 8 > gridPos.height) {
+        move.y += 1;
+    } else if (pos.offsetX + 8 >= gridPos.width) {
+        move.x += 1;
+    } else if (pos.offsetX + 8 < gridPos.x) {
+        move.x -= 1;
+    }
+
+
+    //collision
     let pos2;
-    for(let i=items.length-1; i>=0;i--){
-        pos2 = manComp.getByID(items[i].id,eComp.vec2);
-        if(pos.x === pos2.x && pos.y === pos2.y){
-            if(items[i].itemID === enumItems.bomb){
-                bombMax++;
-            }else
-            if(items[i].itemID === enumItems.explosion){
-                explosionRange++;
+    /**
+     * @type {Grid}
+     */
+    let gridWallPos;
+    for (let i = 0; i < wall.length; i++) {
+        pos2 = manComp.getByID(wall[i], eComp.vec2);
+        gridWallPos = manComp.getByID(grid[pos2.x][pos2.y], eComp.grid);
+        if (pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+            pos.offsetX + 16 > gridWallPos.x && pos.offsetY + 16 > gridWallPos.y) {
+            // console.log("colision");
+
+            if (speedX === 1) {
+                pos.offsetX -= speed;
+                move.offsetX -= speed;
+                canMoveRight = false;
+            } else if (speedX === -1) {
+                pos.offsetX += speed;
+                move.offsetX += speed;
+                canMoveLeft = false;
             }
-            manEntity.destroy(items[i].id);
-            manComp.destroyID(items[i].id);
-            items.splice(i, 1);
-        }
+            if (speedY === 1) {
+                // console.log("aba")
+                pos.offsetY -= speed;
+                move.offsetY -= speed;
+                canMoveDown = false;
+            } else if (speedY === -1) {
+                pos.offsetY += speed;
+                move.offsetY += speed;
+                canMoveUp = false;
+            }
 
+            break;
+        }
     }
 
-    if (goalExist === true && enemies.length === 0) {
-        let goalPos = manComp.getByID(goalId, eComp.vec2);
-        if (pos.x === goalPos.x && pos.y === goalPos.y) {
-            console.log("gane");
-        }
-    }
+    // for (let i = 0; i < bombs.length; i++) {
+    //     pos2 = manComp.getByID(bombs[i].id, eComp.vec2);
+    //     if (move.x === pos2.x && move.y === pos2.y) {
+    //         if (speedX === 1 || speedX === -1) {
+    //             move.x = pos.x;
+    //         }
+
+    //         if (speedY === 1 || speedY === -1) {
+    //             move.y = pos.y;
+    //         }
+    //         break;
+    //     }
+    // }
+
+    //     for (let i = 0; i < destructibleObject.length; i++) {
+    //         pos2 = manComp.getByID(destructibleObject[i], eComp.vec2);
+
+    //         if (move.x === pos2.x && move.y === pos2.y) {
+    //             if (speedX === 1 || speedX === -1) {
+    //                 move.x = pos.x;
+    //             }
+
+    //             if (speedY === 1 || speedY === -1) {
+    //                 move.y = pos.y;
+    //             }
+    //         }
+    //     }
+    // // }
+
+    // // Item Destruction
+    // pos2;
+    // for (let i = items.length - 1; i >= 0; i--) {
+    //     pos2 = manComp.getByID(items[i].id, eComp.vec2);
+    //     if (pos.x === pos2.x && pos.y === pos2.y) {
+    //         if (items[i].itemID === enumItems.bomb) {
+    //             bombMax++;
+    //         } else
+    //             if (items[i].itemID === enumItems.explosion) {
+    //                 explosionRange++;
+    //             }
+    //         manEntity.destroy(items[i].id);
+    //         manComp.destroyID(items[i].id);
+    //         items.splice(i, 1);
+    //     }
+
+    // }
+
+    // if (goalExist === true && enemies.length === 0) {
+    //     let goalPos = manComp.getByID(goalId, eComp.vec2);
+    //     if (pos.x === goalPos.x && pos.y === goalPos.y) {
+    //         console.log("gane");
+    //     }
+    // }
 
     if (speedX !== 0 || speedY !== 0) { return; }
     // if(pos.x !== move.x || pos.y !== move.y){return;}
@@ -444,15 +655,6 @@ function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
-}
-
-let enumDirectionLength = 0;
-const enumDirection = {
-    center: enumDirectionLength++,
-    up: enumDirectionLength++,
-    left: enumDirectionLength++,
-    down: enumDirectionLength++,
-    right: enumDirectionLength++
 }
 
 class GridNeighbors {
@@ -703,17 +905,6 @@ function objectDestruction() {
             manComp.destroyID(destructibleObjectExplosion[i]);
             destructibleObjectExplosion.splice(i, 1);
         }
-        // if((((pos.y+1 === pos2.y || pos.y-1 === pos2.y) && pos.x === pos2.x) && (anim.animation.id === enumAnim.explosionVertical || anim.animation.id === enumAnim.explosionCenter)) ||
-        // (((pos.x+1 === pos2.x || pos.x-1 === pos2.x) && pos.y === pos2.y) && (anim.animation.id === enumAnim.explosionHorizontal || anim.animation.id === enumAnim.explosionCenter))){
-        //     // console.log("objeto");
-        //     // console.log("pos: "+ pos.x + ", "+pos.y);
-        //     // console.log("pos2: "+ + pos2.x + ", "+pos2.y);
-        //     manEntity.destroy(destructibleObjectExplosion[i]);
-        //     manComp.destroyID(destructibleObjectExplosion[i]);
-        //     destructibleObjectExplosion.splice(i, 1);
-        //     break;
-        // }
-        // }
     }
 
     // console.log(destructibleObject);
@@ -732,7 +923,7 @@ function objectDestruction() {
                 destructibleObject.splice(i, 1);
                 createItem(pos.x, pos.y);
                 goalPossibility--;
-                destructibleObjectExplosion.push(createDestructibleObject(pos.x, pos.y, enumAnim.semaphoreExplosion, enumLayer.explosionSemaphore, false, enumImage.semaphore))
+                destructibleObjectExplosion.push(createDestructibleObject(pos.x, pos.y, enumAnim.semaphoreExplosion, enumLayer.explosionSemaphore, false))
                 break;
             }
         }
@@ -893,7 +1084,7 @@ function bomb() {
     if (key['z'] === true && isBombCreated === false && bombs.length < bombMax) {
         isBombCreated = true;
         // let canCreate = true;
-        let playerPos = manComp.getByID(playerId, eComp.vec2);
+        let playerPos = manComp.getByID(playerId, eComp.move);
         let bombPos;
         for (let i = 0; i < bombs.length; i++) {
             bombPos = manComp.getByID(bombs[i].id, eComp.vec2);
@@ -1093,13 +1284,45 @@ function GameLoop() {
     // console.timeEnd("test");
     // console.time("test");
     // showGrid();
-    // showColliders();
+    showColliders();
     // console.timeEnd("test");
-    let text = "player: " + manComp.getByID(playerId, eComp.vec2).x + ", " + manComp.getByID(playerId, eComp.vec2).y;
-    let text2 = "col: " + manComp.getByID(debugId, eComp.vec2).x + ", " + manComp.getByID(debugId, eComp.vec2).y;
+    let pos = manComp.getByID(playerId, eComp.vec2);
+    let text = "player: " + pos.x + ", " + pos.y;
+    let text2 = "player: " + pos.offsetX + ", " + pos.offsetY;
+    let text3 = "move: " + manComp.getByID(playerId, eComp.move).x + ", " + manComp.getByID(playerId, eComp.move).y;
+    let text4 = "move: " + manComp.getByID(playerId, eComp.move).offsetX + ", " + manComp.getByID(playerId, eComp.move).offsetY;
+    // let text2 = "col: " + manComp.getByID(debugId, eComp.vec2).x + ", " + manComp.getByID(debugId, eComp.vec2).y;
     ctx.fillStyle = "red";
     ctx.fillText(text, 30, 230);
     ctx.fillText(text2, 30, 250);
+    ctx.fillText(text3, 30, 270);
+    ctx.fillText(text4, 30, 290);
+
+    if (canMoveUp === true) {
+        ctx.fillText("canMoveUp: true", 180, 230);
+    } else {
+        ctx.fillText("canMoveUp: false", 180, 230);
+    }
+    if (canMoveDown === true) {
+        ctx.fillText("canMoveDown: true", 180, 250);
+    } else {
+        ctx.fillText("canMoveDown: false", 180, 250);
+    }
+    if (canMoveLeft === true) {
+        ctx.fillText("canMoveLeft: true", 180, 270);
+    } else {
+        ctx.fillText("canMoveLeft: false", 180, 270);
+    }
+    if (canMoveRight === true) {
+        ctx.fillText("canMoveRight: true", 180, 290);
+    } else {
+        ctx.fillText("canMoveRight: false", 180, 290);
+    }
+    // ctx.beginPath();
+    // ctx.lineWidth = 1;
+    ctx.strokeStyle = "violet";
+    ctx.fillRect(pos.offsetX + 8, pos.offsetY + 8, 1, 1);
+    // ctx.stroke;
     requestAnimationFrame(GameLoop);
 }
 

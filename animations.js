@@ -118,10 +118,6 @@ export class renderer {
                 ids[anim.layer].push(i);
             }
 
-            // for (let i = 0; i < enumLayerLenght; i++) {
-            //     console.log(animByLayers[i]);
-            // }
-
             for (let i = 0; i < animByLayers.length; i++) {
                 for (let j = 0; j < animByLayers[i].length; j++) {
                     anim = animByLayers[i][j];
@@ -132,8 +128,7 @@ export class renderer {
                     pos = manComp.getByID(grid[vecPos.x][vecPos.y], eComp.grid);
                     // console.log("animID: "+vecPos);
                     // console.log(vec2.pos[vecPos]);
-                    imgID = anim.animation.imageID;//manComp.getByID(ids[i][j], eComp.images).image;
-
+                    imgID = anim.animation.imageID;
                     // console.log(i);
                     // console.log(pos);
                     // console.log(image);

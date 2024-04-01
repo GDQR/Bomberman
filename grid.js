@@ -1,17 +1,21 @@
 // grid
 import {manEntity, manComp,eComp} from "./ecs.js";
 
-class Grid{
-    constructor(x,y,width=16,height=16){
+export class Grid{
+    constructor(x,y){
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
+        this.width = x+16;
+        this.height = y+16;
+        this.centerX = x+8;
+        this.centerY = y+8;
     }
     x;
     y;
-    width = 16;
-    height =16;
+    width;
+    height;
+    centerX;
+    centerY;
 }
 
 export let grid = [];
