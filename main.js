@@ -152,9 +152,10 @@ function createBackground() {
     let randomObjects = 0;
     const maxrandomObjects = 35;
 
-    // TODO: combinar las filas pares y impares
-    for (let i = limitY; i <= limitHeight; i += 2) {
+    for (let i = limitY; i <= limitHeight; i++) {
         for (let j = limitX; j <= limitWidth; j++) {
+
+            if(i % 2 !== 0 || j %2 !== 1){
             randomNum = getRandomInt(0, 3);
             tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
 
@@ -170,17 +171,11 @@ function createBackground() {
                     randomObjects++;
                 }
             }
-
+            }
         }
         randomWallsInRow = 0;
     }
 
-    for (let i = 2; i <= limitHeight; i += 2) {
-        for (let j = limitX; j <= limitWidth; j += 2) {
-            tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
-
-        }
-    }
     goalPossibility = destructibleObject.length;
 }
 
