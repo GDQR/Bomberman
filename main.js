@@ -19,6 +19,7 @@ const enumDirection = {
 
 // player
 
+let canKickBombs = false;
 let speed = 1;
 let canMoveUp = false;
 let canMoveLeft = true;
@@ -145,6 +146,8 @@ function createBackground() {
     // Tiles random
     let randomNum;
     let randomWalls = 0;
+    let randomWallsInRow = 0;
+    const maxrandomWallsInRow = 2;
     const maxrandomWalls = 8;
     let randomObjects = 0;
     const maxrandomObjects = 35;
@@ -156,11 +159,12 @@ function createBackground() {
             tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
 
             if ((i !== limitY || j !== limitX) && (i !== limitY || j !== limitX + 1) && (i !== limitY + 1 || j !== limitX)) {
-                if (randomNum === 0 && randomWalls < maxrandomWalls) {
+                if (randomNum === 0 && randomWallsInRow < maxrandomWallsInRow && randomWalls < maxrandomWalls) {
                     // tilesBackground[i][j] = newTileBackground(j, i, enumAnim.stage1Tile11);
                     wall.push(newWall(j, i, enumAnim.wall1));
                     tilesBackground[i][j] = newTileBackground(j, i, enumAnim.wall1);
                     randomWalls++;
+                    randomWallsInRow++;
                 } else if (randomNum === 1 && randomObjects < maxrandomObjects) {
                     destructibleObject.push(createDestructibleObject(j, i, enumAnim.semaphore, enumLayer.background, true));
                     randomObjects++;
@@ -168,6 +172,7 @@ function createBackground() {
             }
 
         }
+        randomWallsInRow = 0;
     }
 
     for (let i = 2; i <= limitHeight; i += 2) {
@@ -184,14 +189,21 @@ createBackground();
 let enumItemsLength = 0;
 const enumItems = {
     bomb: enumItemsLength++,
-    explosion: enumItemsLength++,
+    fireUp: enumItemsLength++,
+    speed: enumItemsLength++,
+    kick: enumItemsLength++,
+    vest: enumItemsLength++,
+    controlRemote: enumItemsLength++,
+    time: enumItemsLength++,
+    blockPass: enumItemsLength++,
+    live: enumItemsLength++,
 }
 
 var items = [];
 
 function createItem(x, y) {
     let rand = getRandomInt(0, goalPossibility);
-    rand = 1;
+    rand = 9;
     let item = {
         id: -1,
         itemID: -1
@@ -214,10 +226,66 @@ function createItem(x, y) {
         // console.log("pase");
     } else if (rand === 2) {
         item.id = manEntity.create();
-        item.itemID = enumItems.explosion;
+        item.itemID = enumItems.fireUp;
         manComp.create(item.id, eComp.vec2, new Vec2(x, y));
         manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
-        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemExplosion, enumLayer.explosion));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemFireUp, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 3) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.speed;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemSpeed, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 4) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.kick;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemKick, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 5) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.vest;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemVest, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 6) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.controlRemote;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemControlRemote, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 7) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.time;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemTime, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 8) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.blockPass;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemBlockPass, enumLayer.explosion));
+        items.push(item);
+        // console.log("pase");
+    } else if (rand === 9) {
+        item.id = manEntity.create();
+        item.itemID = enumItems.live;
+        manComp.create(item.id, eComp.vec2, new Vec2(x, y));
+        manComp.create(item.id, eComp.offsetImage, new Vec2(0, 0));
+        manComp.create(item.id, eComp.animation, new Animation(enumAnim.itemLive, enumLayer.explosion));
         items.push(item);
         // console.log("pase");
     }
@@ -227,7 +295,7 @@ function createItem(x, y) {
 }
 
 // Bombas
-let bombMax = 10;
+let bombMax = 1;
 let bombs = []; // Guarda todas las bombas
 let isBombCreated = false;
 
@@ -282,43 +350,16 @@ function playerMove() {
      */
     let move = manComp.getByID(playerId, eComp.move);
     let anim = manComp.getByID(playerId, eComp.animation);
+    let posround = { x: Math.round(pos.x), y: Math.round(pos.y), offsetX: Math.round(pos.offsetX), offsetY: Math.round(pos.offsetY) };
+    let moveround = { x: Math.round(move.x), y: Math.round(move.y), offsetX: Math.round(move.offsetX), offsetY: Math.round(move.offsetY) };
+
     let canMove = true;
     // if(prueba==true){
-    /**
-     * gridPos  = 32,16
-     * gridPos2 = 48,16
-     *
-     * gridPos2 - gridPos = 48-32 = 16 - offset(16) = 0
-     *
-     * gridPos  = 48,16
-     * gridPos2 = 32,16
-     *
-     * gridPos2 - gridPos = 32-48 = -16 - offset(-16) = 0
-     */
     // let gridPos = manComp.getByID(grid[pos.x][pos.y], eComp.grid);
     let gridPos = manComp.getByID(grid[move.x][move.y], eComp.grid);
     // let gridPos2 = manComp.getByID(grid[move.x][move.y], eComp.grid);
+    let pos2;
 
-    // no puedo usar por porque jode el movimiento
-    // pero el pos es usado por los grid para saber su posicion
-    // pero necesito el pos para ubicar correctamente la bomba
-
-    // si o si tengo que moverme usando el offset del pos
-    // NO DEBO USAR EL X e Y de POS 
-
-    // pos.x, pos.y NO USAR
-    // pos.offsetX, pos.offsetY se usa para mover el personaje en pantalla
-    // move.x, move.y se usa para el grid
-    // move.offsetX, move.offsetY se usa para saber exactamente en que grid esta
-
-    // se presiona una tecla
-    // usar el sistema de grid con move.x/y
-    // hacer las colisiones con los objetos que no puede pasar
-    // en caso de que exista, no se permite mover el move/pos.offset
-    // PERO SI EL SPEEDX/Y
-    // si no hay colision se mueve el move/pos.offset
-
-     
     if (key['ArrowUp'] === true) {
         speedY = -1;
 
@@ -386,14 +427,14 @@ function playerMove() {
     // }
 
     if (speedY === -1) {
-    // canMoveUp = true;
-    //  canMoveLeft = true;
-    //  canMoveDown = true;
-    //  canMoveRight = true;
+        // canMoveUp = true;
+        //  canMoveLeft = true;
+        //  canMoveDown = true;
+        //  canMoveRight = true;
 
         if (move.y > limitY || move.offsetY > limitY * 16) {
-            pos.offsetY -= speed;
-            move.offsetY -= speed;
+            pos.offsetY = +(pos.offsetY - speed).toFixed(2);;
+            move.offsetY = +(move.offsetY - speed).toFixed(2);;
             playerDirectionY = enumDirection.up;
 
             if (pos.offsetX !== gridPos.x) {
@@ -401,11 +442,11 @@ function playerMove() {
                     pos.offsetX--;
                     move.offsetX--;
                     // console.log("left");
-                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left) {
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left && pos.offsetX >= gridPos.x - 16) {
                     pos.offsetX--;
                     move.offsetX--;
                     // console.log("left");
-                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right) {
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right && pos.offsetX <= gridPos.x + 16) {
                     pos.offsetX++;
                     move.offsetX++;
                     // console.log("right");
@@ -423,24 +464,21 @@ function playerMove() {
 
     } else if (speedY === 1) {
         if (move.y < limitHeight || move.offsetY < limitHeight * 16) {
-            pos.offsetY += speed;
-            move.offsetY += speed;
+            pos.offsetY = +(pos.offsetY + speed).toFixed(2);
+            move.offsetY = +(move.offsetY + speed).toFixed(2);
             // console.log(gridPos);
             // playerDirection = enumDirection.down;
             playerDirectionY = enumDirection.down;
-
+            // console.log(gridPos.x - 16)
             if (pos.offsetX !== gridPos.x) {
                 if (pos.offsetX > gridPos.x && playerDirectionX === enumDirection.left) {
                     pos.offsetX--;
                     move.offsetX--;
                     // console.log("left");
-                }
-                // console.log("right");
-                else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left) {
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.left && pos.offsetX >= gridPos.x - 16) {
                     pos.offsetX--;
                     move.offsetX--;
-                }
-                else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right) {
+                } else if (pos.offsetX < gridPos.x && playerDirectionX === enumDirection.right && pos.offsetX <= gridPos.x + 16) {
                     pos.offsetX++;
                     move.offsetX++;
                     // console.log("right");
@@ -463,12 +501,13 @@ function playerMove() {
         // move.x++;
         // move.offsetX += 1;
         // pos.offsetX-=1;
-        if (move.x < limitWidth || move.offsetX < limitWidth * 16) {
+        if (move.x < limitWidth || (move.offsetX) < limitWidth * 16) {
 
-            pos.offsetX += speed;
-            move.offsetX += speed;
+            pos.offsetX = +(pos.offsetX + speed).toFixed(2);
+            move.offsetX = +(move.offsetX + speed).toFixed(2);
             // playerDirection = enumDirection.right;
             playerDirectionX = enumDirection.right;
+            // console.log((move.offsetX));
             if (pos.offsetY !== gridPos.y) {
                 if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.up) {
                     pos.offsetY--;
@@ -477,7 +516,6 @@ function playerMove() {
                 } else if (pos.offsetY < gridPos.y && playerDirectionY === enumDirection.up && pos.offsetY !== gridPos.y - 16) {
                     pos.offsetY--;
                     move.offsetY--;
-
                     // console.log("up");
                 } else if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.down && pos.offsetY !== gridPos.y + 16) {
                     pos.offsetY++;
@@ -498,10 +536,10 @@ function playerMove() {
         }
     } else if (speedX === -1) {
         if (move.x > limitX || move.offsetX > limitX * 16) {
-            pos.offsetX -= speed;
-            move.offsetX -= speed;
+            pos.offsetX = +(pos.offsetX - speed).toFixed(2);
+            move.offsetX = +(move.offsetX - speed).toFixed(2);
             playerDirectionX = enumDirection.left;
-            if (pos.offsetY !== gridPos.y) {
+            if ((pos.offsetY) !== gridPos.y) {
                 if (pos.offsetY > gridPos.y && playerDirectionY === enumDirection.up) {
                     pos.offsetY--;
                     move.offsetY--;
@@ -541,7 +579,6 @@ function playerMove() {
 
 
     //collision
-    let pos2;
     /**
      * @type {Grid}
      */
@@ -577,51 +614,96 @@ function playerMove() {
         }
     }
 
-    // for (let i = 0; i < bombs.length; i++) {
-    //     pos2 = manComp.getByID(bombs[i].id, eComp.vec2);
-    //     if (move.x === pos2.x && move.y === pos2.y) {
-    //         if (speedX === 1 || speedX === -1) {
-    //             move.x = pos.x;
-    //         }
+    for (let i = 0; i < bombs.length; i++) {
+        pos2 = manComp.getByID(bombs[i].id, eComp.vec2);
+        gridWallPos = manComp.getByID(grid[pos2.x][pos2.y], eComp.grid);
+        if (pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+            pos.offsetX + 16 > gridWallPos.x && pos.offsetY + 16 > gridWallPos.y && bombs[i].playerInside === false) {
+            if (speedX === 1) {
+                pos.offsetX -= speed;
+                move.offsetX -= speed;
+                canMoveRight = false;
+            } else if (speedX === -1) {
+                pos.offsetX += speed;
+                move.offsetX += speed;
+                canMoveLeft = false;
+            }
+            if (speedY === 1) {
+                // console.log("aba")
+                pos.offsetY -= speed;
+                move.offsetY -= speed;
+                canMoveDown = false;
+            } else if (speedY === -1) {
+                pos.offsetY += speed;
+                move.offsetY += speed;
+                canMoveUp = false;
+            }
+            // console.log("no estoy bomba");
+            break;
+        }
+        if (pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+            pos.offsetX + 16 > gridWallPos.x && pos.offsetY + 16 > gridWallPos.y && bombs[i].playerInside === true) {
+            // console.log("estoy bomba");
+            break;
+        }
+        bombs[i].playerInside = false;
+    }
 
-    //         if (speedY === 1 || speedY === -1) {
-    //             move.y = pos.y;
-    //         }
-    //         break;
-    //     }
-    // }
+    for (let i = 0; i < destructibleObject.length; i++) {
+        pos2 = manComp.getByID(destructibleObject[i], eComp.vec2);
+        gridWallPos = manComp.getByID(grid[pos2.x][pos2.y], eComp.grid);
 
-    //     for (let i = 0; i < destructibleObject.length; i++) {
-    //         pos2 = manComp.getByID(destructibleObject[i], eComp.vec2);
+        if (pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+            pos.offsetX + 16 > gridWallPos.x && pos.offsetY + 16 > gridWallPos.y) {
+            // console.log("colision");
 
-    //         if (move.x === pos2.x && move.y === pos2.y) {
-    //             if (speedX === 1 || speedX === -1) {
-    //                 move.x = pos.x;
-    //             }
+            if (speedX === 1) {
+                pos.offsetX -= speed;
+                move.offsetX -= speed;
+                canMoveRight = false;
+            } else if (speedX === -1) {
+                pos.offsetX += speed;
+                move.offsetX += speed;
+                canMoveLeft = false;
+            }
+            if (speedY === 1) {
+                // console.log("aba")
+                pos.offsetY -= speed;
+                move.offsetY -= speed;
+                canMoveDown = false;
+            } else if (speedY === -1) {
+                pos.offsetY += speed;
+                move.offsetY += speed;
+                canMoveUp = false;
+            }
 
-    //             if (speedY === 1 || speedY === -1) {
-    //                 move.y = pos.y;
-    //             }
-    //         }
-    //     }
-    // // }
+            break;
+        }
+    }
 
     // // Item Destruction
-    // pos2;
-    // for (let i = items.length - 1; i >= 0; i--) {
-    //     pos2 = manComp.getByID(items[i].id, eComp.vec2);
-    //     if (pos.x === pos2.x && pos.y === pos2.y) {
-    //         if (items[i].itemID === enumItems.bomb) {
-    //             bombMax++;
-    //         } else
-    //             if (items[i].itemID === enumItems.explosion) {
-    //                 explosionRange++;
-    //             }
-    //         manEntity.destroy(items[i].id);
-    //         manComp.destroyID(items[i].id);
-    //         items.splice(i, 1);
-    //     }
+    for (let i = items.length - 1; i >= 0; i--) {
+        pos2 = manComp.getByID(items[i].id, eComp.vec2);
+        gridWallPos = manComp.getByID(grid[pos2.x][pos2.y], eComp.grid);
 
+        if (pos.offsetX < gridWallPos.width && pos.offsetY < gridWallPos.height &&
+            pos.offsetX + 16 > gridWallPos.x && pos.offsetY + 16 > gridWallPos.y) {
+            if (items[i].itemID === enumItems.bomb) {
+                bombMax++;
+            } else if (items[i].itemID === enumItems.fireUp) {
+                explosionRange++;
+            } else if (items[i].itemID === enumItems.speed) {
+                if (speed < 3) {
+                    speed++;
+                }
+            } else if (items[i].itemID === enumItems.kick) {
+                canKickBombs = true;
+            }
+            manEntity.destroy(items[i].id);
+            manComp.destroyID(items[i].id);
+            items.splice(i, 1);
+        }
+    }
     // }
 
     // if (goalExist === true && enemies.length === 0) {
@@ -935,6 +1017,7 @@ function createBomb(x, y) {
         id: manEntity.create(),
         timer: 0,
         time: 100, // tiempo que tardara en explotar
+        playerInside: true,
         explode: false
     }
 
@@ -1083,25 +1166,16 @@ function bomb() {
 
     if (key['z'] === true && isBombCreated === false && bombs.length < bombMax) {
         isBombCreated = true;
-        // let canCreate = true;
         let playerPos = manComp.getByID(playerId, eComp.move);
         let bombPos;
         for (let i = 0; i < bombs.length; i++) {
             bombPos = manComp.getByID(bombs[i].id, eComp.vec2);
-            // console.log(bombPos);
             if (playerPos.x === bombPos.x && playerPos.y === bombPos.y) {
-                // canCreate = false;
-                // break;
                 return;
             }
         }
-
-        // if(canCreate === true){
         bombs.push(createBomb(playerPos.x, playerPos.y));
-        // }
 
-    } else if (key['z'] === true && bombs.length >= bombMax) {
-        console.log("ya hay muchas bombas");
     }
 
     if (key['z'] === false && isBombCreated === true) {
@@ -1299,24 +1373,24 @@ function GameLoop() {
     ctx.fillText(text4, 30, 290);
 
     if (canMoveUp === true) {
-        ctx.fillText("canMoveUp: true", 180, 230);
+        ctx.fillText("canMoveUp: true", 280, 230);
     } else {
-        ctx.fillText("canMoveUp: false", 180, 230);
+        ctx.fillText("canMoveUp: false", 280, 230);
     }
     if (canMoveDown === true) {
-        ctx.fillText("canMoveDown: true", 180, 250);
+        ctx.fillText("canMoveDown: true", 280, 250);
     } else {
-        ctx.fillText("canMoveDown: false", 180, 250);
+        ctx.fillText("canMoveDown: false", 280, 250);
     }
     if (canMoveLeft === true) {
-        ctx.fillText("canMoveLeft: true", 180, 270);
+        ctx.fillText("canMoveLeft: true", 280, 270);
     } else {
-        ctx.fillText("canMoveLeft: false", 180, 270);
+        ctx.fillText("canMoveLeft: false", 280, 270);
     }
     if (canMoveRight === true) {
-        ctx.fillText("canMoveRight: true", 180, 290);
+        ctx.fillText("canMoveRight: true", 280, 290);
     } else {
-        ctx.fillText("canMoveRight: false", 180, 290);
+        ctx.fillText("canMoveRight: false", 280, 290);
     }
     // ctx.beginPath();
     // ctx.lineWidth = 1;

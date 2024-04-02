@@ -47,7 +47,14 @@ export const enumAnim={
     goal: enumAnimLenght++,
     wall1: enumAnimLenght++,
     itemBomb: enumAnimLenght++,
-    itemExplosion: enumAnimLenght++
+    itemFireUp: enumAnimLenght++,
+    itemSpeed: enumAnimLenght++,
+    itemKick: enumAnimLenght++,
+    itemVest: enumAnimLenght++,
+    itemControlRemote: enumAnimLenght++,
+    itemTime: enumAnimLenght++,
+    itemBlockPass: enumAnimLenght++,
+    itemLive: enumAnimLenght++,
 };
 
 class AnimationData{
@@ -303,6 +310,34 @@ animations[enumAnim.itemBomb].imageID = enumImage.items;
 animations[enumAnim.itemBomb].frame.push(newFrame(0,0,16,16));
 animations[enumAnim.itemBomb].frame.push(newFrame(0,16,16,16));
 
-animations[enumAnim.itemExplosion].imageID = enumImage.items;
-animations[enumAnim.itemExplosion].frame.push(newFrame(16,0,16,16));
-animations[enumAnim.itemExplosion].frame.push(newFrame(16,16,16,16));
+animations[enumAnim.itemFireUp].imageID = enumImage.items;
+animations[enumAnim.itemFireUp].frame.push(newFrame(16,0,16,16));
+animations[enumAnim.itemFireUp].frame.push(newFrame(16,16,16,16));
+
+animations[enumAnim.itemSpeed].imageID = enumImage.items;
+animations[enumAnim.itemSpeed].frame.push(newFrame(16,32,16,16));
+animations[enumAnim.itemSpeed].frame.push(newFrame(16,48,16,16));
+
+animations[enumAnim.itemKick].imageID = enumImage.items;
+animations[enumAnim.itemKick].frame.push(newFrame(32,32,16,16));
+animations[enumAnim.itemKick].frame.push(newFrame(32,48,16,16));
+
+animations[enumAnim.itemVest].imageID = enumImage.items;
+animations[enumAnim.itemVest].frame.push(newFrame(96,0,16,16));
+animations[enumAnim.itemVest].frame.push(newFrame(96,16,16,16));
+
+animations[enumAnim.itemControlRemote].imageID = enumImage.items;
+animations[enumAnim.itemControlRemote].frame.push(newFrame(112,0,16,16));
+animations[enumAnim.itemControlRemote].frame.push(newFrame(112,16,16,16));
+
+animations[enumAnim.itemTime].imageID = enumImage.items;
+animations[enumAnim.itemTime].frame.push(newFrame(112,32,16,16));
+animations[enumAnim.itemTime].frame.push(newFrame(112,48,16,16));
+
+animations[enumAnim.itemBlockPass].imageID = enumImage.items;
+animations[enumAnim.itemBlockPass].frame.push(newFrame(0,32,16,16));
+animations[enumAnim.itemBlockPass].frame.push(newFrame(0,48,16,16));
+
+animations[enumAnim.itemLive].imageID = enumImage.items;
+animations[enumAnim.itemLive].frame.push(newFrame(96,32,16,16));
+animations[enumAnim.itemLive].frame.push(newFrame(96,48,16,16));
