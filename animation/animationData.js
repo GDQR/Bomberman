@@ -87,48 +87,49 @@ for (let i = 0; i < fileImage.length; i++) {
 }
 
 animations[enumAnim.idleDownPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.idleDownPlayer].frame.push(newFrame(72,46));
+animations[enumAnim.idleDownPlayer].frame.push(newFrame(20,47));
 
 animations[enumAnim.idleUpPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.idleUpPlayer].frame.push(newFrame(73,20));
+animations[enumAnim.idleUpPlayer].frame.push(newFrame(20,97));
 
 animations[enumAnim.idleLeftPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.idleLeftPlayer].frame.push(newFrame(3,44));
+animations[enumAnim.idleLeftPlayer].frame.push(newFrame(20,122));
 
 animations[enumAnim.idleRightPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.idleRightPlayer].frame.push(newFrame(106,47));
+animations[enumAnim.idleRightPlayer].frame.push(newFrame(20,72));
 
 animations[enumAnim.downPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.downPlayer].frame.push(newFrame(56,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(72,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(88,46,16,24,10));
-animations[enumAnim.downPlayer].frame.push(newFrame(72,46,16,24,10)); 
-
-animations[enumAnim.upPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.upPlayer].frame.push(newFrame(57,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(73,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(89,20,16,24,10)); // up
-animations[enumAnim.upPlayer].frame.push(newFrame(73,20,16,24,10)); // up
-
-animations[enumAnim.leftPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.leftPlayer].frame.push(newFrame(36,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(3,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(19,44,16,24,10));
-animations[enumAnim.leftPlayer].frame.push(newFrame(3,44,16,24,10));
+animations[enumAnim.downPlayer].frame.push(newFrame(3,47,16,24,10));
+animations[enumAnim.downPlayer].frame.push(newFrame(20,47,16,24,10));
+animations[enumAnim.downPlayer].frame.push(newFrame(37,47,16,24,10));
+animations[enumAnim.downPlayer].frame.push(newFrame(20,47,16,24,10)); 
 
 animations[enumAnim.rightPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.rightPlayer].frame.push(newFrame(138,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(106,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(122,47,16,24,10));
-animations[enumAnim.rightPlayer].frame.push(newFrame(106,47,16,24,10));
+animations[enumAnim.rightPlayer].frame.push(newFrame(3,72,16,24,10));
+animations[enumAnim.rightPlayer].frame.push(newFrame(20,72,16,24,10));
+animations[enumAnim.rightPlayer].frame.push(newFrame(37,72,16,24,10));
+animations[enumAnim.rightPlayer].frame.push(newFrame(20,72,16,24,10));
+
+animations[enumAnim.upPlayer].imageID = enumImage.bomberman;
+animations[enumAnim.upPlayer].frame.push(newFrame(3,97,16,24,10)); // up
+animations[enumAnim.upPlayer].frame.push(newFrame(20,97,16,24,10)); // up
+animations[enumAnim.upPlayer].frame.push(newFrame(37,97,16,24,10)); // up
+animations[enumAnim.upPlayer].frame.push(newFrame(20,97,16,24,10)); // up
+
+animations[enumAnim.leftPlayer].imageID = enumImage.bomberman;
+animations[enumAnim.leftPlayer].frame.push(newFrame(3,122,16,24,10));
+animations[enumAnim.leftPlayer].frame.push(newFrame(20,122,16,24,10));
+animations[enumAnim.leftPlayer].frame.push(newFrame(37,122,16,24,10));
+animations[enumAnim.leftPlayer].frame.push(newFrame(20,122,16,24,10));
 
 animations[enumAnim.deadPlayer].imageID = enumImage.bomberman;
-animations[enumAnim.deadPlayer].frame.push(newFrame(30,75,16,24,20));
-animations[enumAnim.deadPlayer].frame.push(newFrame(49,75,16,24,20));
-animations[enumAnim.deadPlayer].frame.push(newFrame(66,75,16,24,20));
-animations[enumAnim.deadPlayer].frame.push(newFrame(83,75,16,24,20));
-animations[enumAnim.deadPlayer].frame.push(newFrame(100,75,16,24,20));
-animations[enumAnim.deadPlayer].frame.push(newFrame(118,75,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(3,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(20,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(37,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(54,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(71,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(88,160,16,24,20));
+animations[enumAnim.deadPlayer].frame.push(newFrame(105,160,16,24,20));
 
 animations[enumAnim.bomb].imageID = enumImage.enemies;
 animations[enumAnim.bomb].frame.push(newFrame(2,28,16,16));
@@ -156,82 +157,82 @@ animations[enumAnim.enemie1Left].frame.push(newFrame(182,2,16,24,1));
 animations[enumAnim.enemie1Left].frame.push(newFrame(200,2,16,24,1));
 
 animations[enumAnim.explosionLeft].imageID = enumImage.explosion;
-animations[enumAnim.explosionLeft].frame.push(newFrame(0,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(17,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(34,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(51,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(68,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(51,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(34,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(17,0,16,16,5));
-animations[enumAnim.explosionLeft].frame.push(newFrame(0,0,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(254,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(271,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(288,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(305,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(322,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(305,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(288,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(271,66,16,16,5));
+animations[enumAnim.explosionLeft].frame.push(newFrame(254,66,16,16,5));
 
 // la explosion horizontal parece que es del lado izquierdo
 animations[enumAnim.explosionHorizontal].imageID = enumImage.explosion;
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(0,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(17,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(34,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(51,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(68,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(51,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(34,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(17,17,16,16,5));
-animations[enumAnim.explosionHorizontal].frame.push(newFrame(0,17,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(288,117,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(288,100,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(254,134,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(254,117,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(254,100,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(254,117,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(254,134,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(288,100,16,16,5));
+animations[enumAnim.explosionHorizontal].frame.push(newFrame(288,117,16,16,5));
 
 animations[enumAnim.explosionRight].imageID = enumImage.explosion;
-animations[enumAnim.explosionRight].frame.push(newFrame(0,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(17,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(34,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(51,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(68,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(51,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(34,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(17,34,16,16,5));
-animations[enumAnim.explosionRight].frame.push(newFrame(0,34,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(305,117,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(305,100,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(271,134,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(51,117,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(271,100,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(51,117,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(271,134,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(300,100,16,16,5));
+animations[enumAnim.explosionRight].frame.push(newFrame(305,117,16,16,5));
 
 animations[enumAnim.explosionCenter].imageID = enumImage.explosion;
-animations[enumAnim.explosionCenter].frame.push(newFrame(0,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(17,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(34,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(51,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(68,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(51,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(34,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(17,51,16,16,5));
-animations[enumAnim.explosionCenter].frame.push(newFrame(0,51,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(322,117,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(373,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(356,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(340,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(322,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(340,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(356,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(373,100,16,16,5));
+animations[enumAnim.explosionCenter].frame.push(newFrame(322,117,16,16,5));
 
 animations[enumAnim.explosionUp].imageID = enumImage.explosion;
-animations[enumAnim.explosionUp].frame.push(newFrame(0,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(17,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(34,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(51,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(68,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(51,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(34,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(17,68,16,16,5));
-animations[enumAnim.explosionUp].frame.push(newFrame(0,68,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(322,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(339,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(356,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(373,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(373,66,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(373,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(356,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(339,83,16,16,5));
+animations[enumAnim.explosionUp].frame.push(newFrame(322,83,16,16,5));
 
 animations[enumAnim.explosionVertical].imageID = enumImage.explosion;
-animations[enumAnim.explosionVertical].frame.push(newFrame(0,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(17,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(34,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(51,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(68,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(51,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(34,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(17,85,16,16,5));
-animations[enumAnim.explosionVertical].frame.push(newFrame(0,85,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(305,134,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(288,134,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(373,117,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(356,117,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(339,117,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(356,117,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(373,117,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(288,134,16,16,5));
+animations[enumAnim.explosionVertical].frame.push(newFrame(305,134,16,16,5));
 
 animations[enumAnim.explosionDown].imageID = enumImage.explosion;
-animations[enumAnim.explosionDown].frame.push(newFrame(0,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(17,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(34,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(51,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(68,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(51,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(34,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(17,102,16,16,5));
-animations[enumAnim.explosionDown].frame.push(newFrame(0,102,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(305,83,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(322,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(373,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(356,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(339,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(356,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(373,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(322,134,16,16,5));
+animations[enumAnim.explosionDown].frame.push(newFrame(305,83,16,16,5));
 
 animations[enumAnim.explosionEnemy].imageID = enumImage.explosionEnemy;
 animations[enumAnim.explosionEnemy].frame.push(newFrame(0,0,24,40,3));
@@ -244,100 +245,102 @@ animations[enumAnim.explosionEnemy].frame.push(newFrame(144+6,0,24,40,3));
 animations[enumAnim.explosionEnemy].frame.push(newFrame(168+7,0,24,40,3));
 
 animations[enumAnim.semaphore].imageID = enumImage.semaphore;
-animations[enumAnim.semaphore].frame.push(newFrame(0,0,16,16,3));
-animations[enumAnim.semaphore].frame.push(newFrame(17,0,16,16,3));
-animations[enumAnim.semaphore].frame.push(newFrame(34,0,16,16,3));
-animations[enumAnim.semaphore].frame.push(newFrame(51,0,16,16,3));
+animations[enumAnim.semaphore].frame.push(newFrame(322,15,16,16,3));
+animations[enumAnim.semaphore].frame.push(newFrame(339,15,16,16,3));
+animations[enumAnim.semaphore].frame.push(newFrame(356,15,16,16,3));
+animations[enumAnim.semaphore].frame.push(newFrame(373,15,16,16,3));
 
 animations[enumAnim.semaphoreExplosion].imageID = enumImage.semaphore;
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(0,17,16,16,5));
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(17,17,16,16,5));
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(34,17,16,16,5));
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(51,17,16,16,5));
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(68,17,16,16,5));
-animations[enumAnim.semaphoreExplosion].frame.push(newFrame(85,17,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(254,151,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(271,151,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(288,151,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(305,151,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(322,151,16,16,5));
+animations[enumAnim.semaphoreExplosion].frame.push(newFrame(339,151,16,16,5));
 
 animations[enumAnim.stage1Tile1].imageID = enumImage.background;
-animations[enumAnim.stage1Tile1].frame.push(newFrame(0,0,16,16));
+animations[enumAnim.stage1Tile1].frame.push(newFrame(254,15,16,16));
 
 animations[enumAnim.stage1Tile2].imageID = enumImage.background;
-animations[enumAnim.stage1Tile2].frame.push(newFrame(17,0,16,16));
+animations[enumAnim.stage1Tile2].frame.push(newFrame(271,15,16,16));
 
 animations[enumAnim.stage1Tile3].imageID = enumImage.background;
-animations[enumAnim.stage1Tile3].frame.push(newFrame(34,0,16,16));
+animations[enumAnim.stage1Tile3].frame.push(newFrame(288,15,16,16));
 
 animations[enumAnim.stage1Tile4].imageID = enumImage.background;
-animations[enumAnim.stage1Tile4].frame.push(newFrame(51,0,16,16));
+animations[enumAnim.stage1Tile4].frame.push(newFrame(305,15,16,16));
 
 animations[enumAnim.stage1Tile5].imageID = enumImage.background;
-animations[enumAnim.stage1Tile5].frame.push(newFrame(68,0,16,16));
+animations[enumAnim.stage1Tile5].frame.push(newFrame(254,32,16,16));
 
 animations[enumAnim.stage1Tile6].imageID = enumImage.background;
-animations[enumAnim.stage1Tile6].frame.push(newFrame(68+17,0,16,16));
+animations[enumAnim.stage1Tile6].frame.push(newFrame(271,32,16,16));
 
 animations[enumAnim.stage1Tile7].imageID = enumImage.background;
-animations[enumAnim.stage1Tile7].frame.push(newFrame(68+34,0,16,16));
+animations[enumAnim.stage1Tile7].frame.push(newFrame(254,50,16,16));
 
 animations[enumAnim.stage1Tile8].imageID = enumImage.background;
-animations[enumAnim.stage1Tile8].frame.push(newFrame(68+51,0,16,16));
+animations[enumAnim.stage1Tile8].frame.push(newFrame(271,50,16,16));
 
 animations[enumAnim.stage1Tile9].imageID = enumImage.background;
-animations[enumAnim.stage1Tile9].frame.push(newFrame(68+68,0,16,16));
+animations[enumAnim.stage1Tile9].frame.push(newFrame(288,50,16,16));
 
 animations[enumAnim.wall1].imageID = enumImage.background;
-animations[enumAnim.wall1].frame.push(newFrame(0,17,16,16));
+animations[enumAnim.wall1].frame.push(newFrame(288,32,16,16));
 
-animations[enumAnim.stage1Tile10].imageID = enumImage.background;
-animations[enumAnim.stage1Tile10].frame.push(newFrame(17,17,16,16));
+// no se usa
+// animations[enumAnim.stage1Tile10].imageID = enumImage.background;
+// animations[enumAnim.stage1Tile10].frame.push(newFrame(17,17,16,16));
 
 animations[enumAnim.stage1Tile11].imageID = enumImage.background;
-animations[enumAnim.stage1Tile11].frame.push(newFrame(34,17,16,16));
+animations[enumAnim.stage1Tile11].frame.push(newFrame(305,49,16,16));
 
-animations[enumAnim.stage1Tile12].imageID = enumImage.background;
-animations[enumAnim.stage1Tile12].frame.push(newFrame(51,17,16,16));
+// no se usan
+// animations[enumAnim.stage1Tile12].imageID = enumImage.background;
+// animations[enumAnim.stage1Tile12].frame.push(newFrame(51,17,16,16));
 
-animations[enumAnim.stage1Tile13].imageID = enumImage.background;
-animations[enumAnim.stage1Tile13].frame.push(newFrame(68+17,17,16,16));
+// animations[enumAnim.stage1Tile13].imageID = enumImage.background;
+// animations[enumAnim.stage1Tile13].frame.push(newFrame(68+17,17,16,16));
 
-animations[enumAnim.stage1Tile14].imageID = enumImage.background;
-animations[enumAnim.stage1Tile14].frame.push(newFrame(68+34,17,16,16));
+// animations[enumAnim.stage1Tile14].imageID = enumImage.background;
+// animations[enumAnim.stage1Tile14].frame.push(newFrame(68+34,17,16,16));
 
 animations[enumAnim.goal].imageID = enumImage.items;
-animations[enumAnim.goal].frame.push(newFrame(80,32,16,16));
-animations[enumAnim.goal].frame.push(newFrame(80,48,16,16));
+animations[enumAnim.goal].frame.push(newFrame(268,64,16,16));
+animations[enumAnim.goal].frame.push(newFrame(268,80,16,16));
 
 animations[enumAnim.itemBomb].imageID = enumImage.items;
-animations[enumAnim.itemBomb].frame.push(newFrame(0,0,16,16));
-animations[enumAnim.itemBomb].frame.push(newFrame(0,16,16,16));
+animations[enumAnim.itemBomb].frame.push(newFrame(188,32,16,16));
+animations[enumAnim.itemBomb].frame.push(newFrame(188,48,16,16));
 
 animations[enumAnim.itemFireUp].imageID = enumImage.items;
-animations[enumAnim.itemFireUp].frame.push(newFrame(16,0,16,16));
-animations[enumAnim.itemFireUp].frame.push(newFrame(16,16,16,16));
+animations[enumAnim.itemFireUp].frame.push(newFrame(204,32,16,16));
+animations[enumAnim.itemFireUp].frame.push(newFrame(204,48,16,16));
 
 animations[enumAnim.itemSpeed].imageID = enumImage.items;
-animations[enumAnim.itemSpeed].frame.push(newFrame(16,32,16,16));
-animations[enumAnim.itemSpeed].frame.push(newFrame(16,48,16,16));
+animations[enumAnim.itemSpeed].frame.push(newFrame(204,64,16,16));
+animations[enumAnim.itemSpeed].frame.push(newFrame(204,80,16,16));
 
 animations[enumAnim.itemKick].imageID = enumImage.items;
-animations[enumAnim.itemKick].frame.push(newFrame(32,32,16,16));
-animations[enumAnim.itemKick].frame.push(newFrame(32,48,16,16));
+animations[enumAnim.itemKick].frame.push(newFrame(220,64,16,16));
+animations[enumAnim.itemKick].frame.push(newFrame(220,80,16,16));
 
 animations[enumAnim.itemVest].imageID = enumImage.items;
-animations[enumAnim.itemVest].frame.push(newFrame(96,0,16,16));
-animations[enumAnim.itemVest].frame.push(newFrame(96,16,16,16));
+animations[enumAnim.itemVest].frame.push(newFrame(284,32,16,16));
+animations[enumAnim.itemVest].frame.push(newFrame(284,48,16,16));
 
 animations[enumAnim.itemControlRemote].imageID = enumImage.items;
-animations[enumAnim.itemControlRemote].frame.push(newFrame(112,0,16,16));
-animations[enumAnim.itemControlRemote].frame.push(newFrame(112,16,16,16));
+animations[enumAnim.itemControlRemote].frame.push(newFrame(300,32,16,16));
+animations[enumAnim.itemControlRemote].frame.push(newFrame(300,48,16,16));
 
 animations[enumAnim.itemTime].imageID = enumImage.items;
-animations[enumAnim.itemTime].frame.push(newFrame(112,32,16,16));
-animations[enumAnim.itemTime].frame.push(newFrame(112,48,16,16));
+animations[enumAnim.itemTime].frame.push(newFrame(300,64,16,16));
+animations[enumAnim.itemTime].frame.push(newFrame(300,80,16,16));
 
 animations[enumAnim.itemBlockPass].imageID = enumImage.items;
-animations[enumAnim.itemBlockPass].frame.push(newFrame(0,32,16,16));
-animations[enumAnim.itemBlockPass].frame.push(newFrame(0,48,16,16));
+animations[enumAnim.itemBlockPass].frame.push(newFrame(188,64,16,16));
+animations[enumAnim.itemBlockPass].frame.push(newFrame(188,80,16,16));
 
 animations[enumAnim.itemLive].imageID = enumImage.items;
-animations[enumAnim.itemLive].frame.push(newFrame(96,32,16,16));
-animations[enumAnim.itemLive].frame.push(newFrame(96,48,16,16));
+animations[enumAnim.itemLive].frame.push(newFrame(188,64,16,16));
+animations[enumAnim.itemLive].frame.push(newFrame(188,80,16,16));

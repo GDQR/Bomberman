@@ -14,14 +14,14 @@ export const enumImage = {
     // walls: 7
 };
 
-fileImage.push("sprites/Bomberman.png");
-fileImage.push("sprites/background.png");
-fileImage.push("sprites/Enemies and items.gif");
+fileImage.push("sprites/SNES - Super Bomberman - Bomberman.png");
+fileImage.push("sprites/SNES - Super Bomberman - Tiles.png");
+fileImage.push("sprites/SNES - Super Bomberman - World 1 Enemies and Items.gif");
 fileImage.push("sprites/collider.png");
-fileImage.push("sprites/explosion.png");
-fileImage.push("sprites/explosionEnemy.png");
-fileImage.push("sprites/semaphore.png");
-fileImage.push("sprites/items.png");
+fileImage.push("sprites/SNES - Super Bomberman - Tiles.png");
+fileImage.push("sprites/enemyExplosion.png");
+fileImage.push("sprites/SNES - Super Bomberman - Tiles.png");
+fileImage.push("sprites/SNES - Super Bomberman - World 1 Enemies and Items.gif");
 // fileImage.push("sprites/walls.png");
 
 

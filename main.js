@@ -198,7 +198,7 @@ var items = [];
 
 function createItem(x, y) {
     let rand = getRandomInt(0, goalPossibility);
-    rand = 9;
+    // rand = 8; // test for item
     let item = {
         id: -1,
         itemID: -1
@@ -1338,8 +1338,8 @@ function showColliders() {
 
 }
 
-let imageStage1 = new Image();
-imageStage1.src = "sprites/Stage 1-1.png";
+// let imageStage1 = new Image();
+// imageStage1.src = "sprites/Stage 1-1.png";
 
 function GameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
